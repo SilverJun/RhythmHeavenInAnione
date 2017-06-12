@@ -4,7 +4,7 @@
 PlayerSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  productGUID: a901bf3ecfa96e54287f97bcb34376e9
+  productGUID: 01cf32b3afda5a542898ec8cbb7848e6
   AndroidProfiler: 0
   defaultScreenOrientation: 4
   targetDevice: 2
@@ -585,8 +585,8 @@ PlayerSettings:
     UNet: 1
   facebookSdkVersion: 7.9.1
   apiCompatibilityLevel: 2
-  cloudProjectId: 43a6cb5d-6bd8-4bc5-89fa-88e72775f214
-  projectName: AnioneGame (1)
+  cloudProjectId: 5805e9fa-f0b1-4b77-89b2-16571aafca83
+  projectName: AnioneGame (2)
   organizationId: eunjun
   cloudEnabled: 0
   enableNewInputSystem: 0
