@@ -49,13 +49,13 @@ public class AbstractStage : MonoBehaviour {
     private Dictionary<string, System.Action<string[]>> _methods = new Dictionary<string, System.Action<string[]>>();
     private Dictionary<int, Pattern> _actions = new Dictionary<int, Pattern>();
     private Dictionary<string, NoteSetting> _noteSettings = new Dictionary<string, NoteSetting>();
+    private bool _isTiming;
 
     public TextAsset _script;
     public AudioSource _stageBgm;
     public AudioSource _metronome;
-
-    [Range(0.0f, 1.0f)]
-    public float _startDelay;
+    
+    protected float _startDelay;
     protected float _bpm;
     protected float _fourBeatSecond;
     protected Stopwatch _timer = new Stopwatch();
@@ -66,6 +66,8 @@ public class AbstractStage : MonoBehaviour {
 
         _stageBgm.playOnAwake = false;
         _metronome.playOnAwake = false;
+
+        _isTiming = false;
 
         _methods.Add("NoteSetting", ParseNoteSetting);
         _methods.Add("Pattern", ParsePattern);
@@ -139,7 +141,7 @@ public class AbstractStage : MonoBehaviour {
     }
     
     /// <summary>
-    /// 1. 스테이지 RAS에서 읽은 Action 메소드들을 준비합니다.
+    /// 1. 스테이지 RAS에서 읽은 Action 메소드들을 준비.
     /// 2. Action리스트를 순회하면서 다음 실행할 노트를 미리 current Note에 저장
     /// 3. 해당 액션의 시간이 되면 액션 실행.
     /// 4. 2~3 반복.
@@ -172,8 +174,9 @@ public class AbstractStage : MonoBehaviour {
                 foreach (var note in item.Value._noteSetting)
                 {
                     OnNote(note._name, note._beat, note._type);
+
+                    _isTiming = (note._type != "Notice");
                     noteGenTime += BeatToRealMillisecond(note._beat);
-                    Debug.Log(time + noteGenTime);
                     while (time + noteGenTime > _timer.ElapsedMilliseconds)
                     {
                         yield return new WaitForEndOfFrame();
@@ -228,8 +231,9 @@ public class AbstractStage : MonoBehaviour {
     /// <returns>판정에 맞으면 true를 반환</returns>
     public void CheckNoteTouch()
     {
-        if (true)
+        if (_isTiming)
         {
+            _isTiming = false;
             OnSuccess();
         }
         else

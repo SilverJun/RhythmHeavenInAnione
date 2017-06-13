@@ -15,7 +15,8 @@
 NoteSetting(OneNotice, 4, Notice)
 NoteSetting(OneCheck, 8, Touch)
 NoteSetting(TwoNotice, 4, Notice)
-NoteSetting(TwoCheck, 8, Touch)
+NoteSetting(TwoOneCheck, 8, Touch)
+NoteSetting(TwoTwoCheck, 8, Touch)
 NoteSetting(ThreeOneNotice, 4, Notice)
 NoteSetting(ThreeOneCheck, 8, Touch)
 NoteSetting(ThreeTwoNotice, 8, Notice)
@@ -24,7 +25,7 @@ NoteSetting(ThreeThreeNotice, 8, Notice)
 NoteSetting(ThreeThreeCheck, 8, Touch)
 
 Pattern(One, OneNotice, OneCheck)
-Pattern(Two, TwoNotice, TwoCheck, TwoCheck)
+Pattern(Two, TwoNotice, TwoOneCheck, TwoTwoCheck)
 Pattern(Three, ThreeOneNotice, ThreeOneCheck, ThreeTwoNotice, ThreeTwoCheck, ThreeThreeNotice, ThreeThreeCheck)
 
 Action(17, One)

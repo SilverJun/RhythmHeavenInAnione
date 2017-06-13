@@ -11,6 +11,16 @@ public class LibraryStage : AbstractStage {
     GameObject _player;
     GameObject _book;
 
+    public AudioSource _AudioSource = new AudioSource();
+    public AudioClip _One;
+    public AudioClip _Two;
+    public AudioClip _TwoNote;
+    public AudioClip _tOne;
+    public AudioClip _tTwo;
+    public AudioClip _tThree;
+    public AudioClip _tFour;
+    public AudioClip _Success;
+
     // Use this for initialization
     void Start()
     {
@@ -62,39 +72,51 @@ public class LibraryStage : AbstractStage {
         switch (name)
         {
             case "OneNotice":
+                _AudioSource.PlayOneShot(_One);
                 _book.GetComponent<Book>().SetOne();
                 break;
             case "TwoNotice":
+                _AudioSource.PlayOneShot(_Two);
                 _book.GetComponent<Book>().SetTwo();
                 break;
 
             case "ThreeOneNotice":
-                Debug.Log("여기!!! three 1");
+                _AudioSource.PlayOneShot(_tOne);
                 _book.GetComponent<Book>().SetThree();
                 break;
             case "ThreeTwoNotice":
-            case "ThreeThreeNotice":
-                Debug.Log("여기!!! three 23");
                 _book.GetComponent<Book>().SetThree();
                 break;
-
-            case "OneCheck":
+            case "ThreeThreeNotice":
+                _book.GetComponent<Book>().SetThree();
+                break;
             case "TwoCheck":
+                _AudioSource.PlayOneShot(_TwoNote);
+                break;
+            case "OneCheck":
+                _AudioSource.PlayOneShot(_One);
+                break;
             case "ThreeOneCheck":
+                _AudioSource.PlayOneShot(_tTwo);
+                break;
             case "ThreeTwoCheck":
+                _AudioSource.PlayOneShot(_tThree);
+                break;
             case "ThreeThreeCheck":
-
+                _AudioSource.PlayOneShot(_tFour);
                 break;
         }
     }
 
     public override void OnSuccess()
     {
+        _AudioSource.PlayOneShot(_Success);
         _monitor.GetComponent<Monitor>().SetO();
     }
 
     public override void OnFail()
     {
+        Debug.Log("실패!!");
         _monitor.GetComponent<Monitor>().SetX();
     }
 }

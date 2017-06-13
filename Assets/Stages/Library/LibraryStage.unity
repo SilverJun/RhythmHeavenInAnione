@@ -389,7 +389,15 @@ MonoBehaviour:
   _script: {fileID: 4900000, guid: 581fdfcdfaf518346b70b4fe19ffea9c, type: 3}
   _stageBgm: {fileID: 658712897}
   _metronome: {fileID: 658712900}
-  _startDelay: 0.33
+  _AudioSource: {fileID: 658712900}
+  _One: {fileID: 8300000, guid: 721eed081713ee14ca023c7b14683143, type: 3}
+  _Two: {fileID: 8300000, guid: 971898ad655579a4a94c7c967a487866, type: 3}
+  _TwoNote: {fileID: 8300000, guid: 5c9bb4bc1cee1ae4b8878a9fd2af8197, type: 3}
+  _tOne: {fileID: 8300000, guid: e67546aa970bcb040868e742faa8140f, type: 3}
+  _tTwo: {fileID: 8300000, guid: a7ed5a776b9a4624d8b8820c8cb135a7, type: 3}
+  _tThree: {fileID: 8300000, guid: 2e13e3cd34970d84fa4f33e394be60e2, type: 3}
+  _tFour: {fileID: 8300000, guid: 6a514c09debbfaf41a95d514554e90fa, type: 3}
+  _Success: {fileID: 8300000, guid: c66ec19e0dba5734eb4b83c76458216f, type: 3}
 --- !u!4 &658712899
 Transform:
   m_ObjectHideFlags: 0
@@ -412,7 +420,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: c70166bea4e690d4c8cd6203c89b1aab, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
