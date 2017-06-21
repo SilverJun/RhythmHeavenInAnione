@@ -19,7 +19,7 @@ public class LibraryStage : AbstractStage {
     public AudioClip _tTwo;
     public AudioClip _tThree;
     public AudioClip _tFour;
-    public AudioClip _Success;
+    //public AudioClip _Success;
 
     // Use this for initialization
     void Start()
@@ -110,7 +110,7 @@ public class LibraryStage : AbstractStage {
 
     public override void OnSuccess()
     {
-        _AudioSource.PlayOneShot(_Success);
+        //_AudioSource.PlayOneShot(_Success);
         _monitor.GetComponent<Monitor>().SetO();
     }
 

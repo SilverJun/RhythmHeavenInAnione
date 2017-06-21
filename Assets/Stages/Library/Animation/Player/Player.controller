@@ -234,7 +234,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Player_Action
-  m_Speed: 10
+  m_Speed: 5.27
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101994395363043718}
