@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 7ee5f87eed0f3ad40b489f174157f638
+timeCreated: 1498441030
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: 1HoonMakdaeyunpil
+  fontNames:
+  - 1HoonMakdaeyunpil
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
