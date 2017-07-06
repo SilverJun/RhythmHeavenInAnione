@@ -7,31 +7,35 @@ using UnityEngine.SceneManagement;
 public class Logo : MonoBehaviour
 {
     private bool _isTouched = false;
-    private Vector3 _touchPosition;
-    private float swipeResistance = 100.0f;
+    private bool _isSplash = true;
     private GameObject _info;
+    private GameObject _arrow;
 
     private Rigidbody2D _rigid;
+    private Animator _anim;
 
 	// Use this for initialization
 	void Start ()
 	{
 	    _info = GameObject.Find("Info");
-	    _rigid = GetComponent<Rigidbody2D>();
+	    _arrow = GameObject.Find("화살표");
+        
+        _rigid = GetComponent<Rigidbody2D>();
+	    _anim = GetComponent<Animator>();
 	}
 
     void Update()
     {
         // 타이틀 위로 슬라이드되서 안보일때.
-        if (transform.position.y > Camera.main.rect.yMax + 10.0f)
+        if (_isSplash && transform.position.y > Camera.main.rect.yMax + 10.0f)
         {
-            SceneManager.LoadScene("LibraryStage");
+            _isSplash = false;
         }
     }
 
     void FixedUpdate()
     {
-        if (_isTouched)
+        if (_isSplash && _isTouched)
         {
             _rigid.AddForce((Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * 1000.0f);
         }
@@ -39,34 +43,35 @@ public class Logo : MonoBehaviour
 
     void OnMouseDown()
     {
-        Debug.Log("마우스 누름");
         _isTouched = true;
-        _touchPosition = Input.mousePosition;
 
+        _arrow.SetActive(false);
         _info.GetComponent<Info>().SwapSprite();
     }
 
     void OnMouseUp()
     {
-        Debug.Log("마우스 땜");
+        if (!_isSplash) { return; }
+        
         _isTouched = false;
-
-        Vector3 lastPosition = Input.mousePosition;
-        Vector3 deltaSwipe = _touchPosition - lastPosition;
-        _touchPosition = Input.mousePosition;
-
-        if (_rigid.velocity.y > 10.0f)
+        
+        if (_rigid.velocity.y > 20.0f)
         {
-            Debug.Log("다음 스테이지 이동!");
             _rigid.drag = 0.0f;
         }
         else
         {
-            Debug.Log("힘이 이것밖에 안됩니까??");
-            _rigid.drag = 20.0f;
+            _rigid.velocity = new Vector2(0.0f, 0.0f);
             _rigid.position = new Vector2(0.0f, 0.0f);
+            _rigid.drag = 20.0f;
+            _arrow.SetActive(true);
         }
 
         _info.GetComponent<Info>().SwapSprite();
+    }
+
+    public bool IsEnd()
+    {
+        return _isSplash;
     }
 }

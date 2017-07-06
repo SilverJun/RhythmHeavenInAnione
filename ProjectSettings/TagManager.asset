@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Background
   - Monitor
+  - Menu
   layers:
   - Default
   - TransparentFX
