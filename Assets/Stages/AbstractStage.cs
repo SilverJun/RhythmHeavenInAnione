@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
 /// <summary>
@@ -58,7 +59,8 @@ public class AbstractStage : MonoBehaviour {
     protected float _startDelay;
     protected float _bpm;
     protected float _fourBeatSecond;
-    protected Stopwatch _timer = new Stopwatch();
+    protected int _totalNote;
+    protected int _hitNote;
 
     private void Awake()
     {
@@ -66,7 +68,6 @@ public class AbstractStage : MonoBehaviour {
 
         _stageBgm.playOnAwake = false;
         _metronome.playOnAwake = false;
-
         _isTiming = false;
 
         _methods.Add("NoteSetting", ParseNoteSetting);
@@ -150,44 +151,43 @@ public class AbstractStage : MonoBehaviour {
     public IEnumerator StartStage()
     {
         yield return new WaitForSeconds(_startDelay);
-        _timer.Start();
+        //_timer.Start();
 
-        while (_stageBgm.isPlaying)
+        foreach (var item in _actions)
         {
-            foreach (var item in _actions)
-            {
-                var time = BeatToRealMillisecond(item.Key);
+            var time = BeatToRealMillisecond(item.Key);
 
-                // 액션 실행.
-                
-                // 패턴 시작 전까지 대기.
-                while (time > _timer.ElapsedMilliseconds)
+            // 액션 실행.
+
+            // 패턴 시작 전까지 대기.
+            while (time > _stageBgm.time * 1000.0f)
+            {
+                yield return new WaitForEndOfFrame();
+            }
+
+            // OnAction 실행.
+            OnAction(item.Key, item.Value);
+
+            var noteGenTime = 0.0f;
+            // 패턴이 시작되면 해당하는 노트를 실행.
+            foreach (var note in item.Value._noteSetting)
+            {
+                OnNote(note._name, note._beat, note._type);
+
+                _isTiming = (note._type != "Notice");
+                if (_isTiming)
+                    _totalNote++;
+                noteGenTime += BeatToRealMillisecond(note._beat);
+                while (time + noteGenTime > _stageBgm.time * 1000.0f)
                 {
                     yield return new WaitForEndOfFrame();
                 }
-
-                // OnAction 실행.
-                OnAction(item.Key, item.Value);
-
-                var noteGenTime = 0.0f;
-                // 패턴이 시작되면 해당하는 노트를 실행.
-                foreach (var note in item.Value._noteSetting)
-                {
-                    OnNote(note._name, note._beat, note._type);
-
-                    _isTiming = (note._type != "Notice");
-                    noteGenTime += BeatToRealMillisecond(note._beat);
-                    while (time + noteGenTime > _timer.ElapsedMilliseconds)
-                    {
-                        yield return new WaitForEndOfFrame();
-                    }
-                }
+                if (_isTiming)
+                    OnFail();
             }
-
-            yield break;
         }
 
-        _timer.Stop();
+        yield return StartCoroutine(GoEndScene());
     }
 
     private void ParseNoteSetting(string[] token)
@@ -240,5 +240,14 @@ public class AbstractStage : MonoBehaviour {
         {
             OnFail();
         }
+    }
+
+    IEnumerator GoEndScene()
+    {
+        StageScoreInfo.SetScore(_hitNote, _totalNote);
+        yield return new WaitForSeconds(2.0f);
+        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+        yield return new WaitForSeconds(2.0f);
+        SceneManager.LoadSceneAsync("EndStage");
     }
 }

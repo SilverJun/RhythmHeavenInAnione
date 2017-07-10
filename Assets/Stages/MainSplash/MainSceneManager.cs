@@ -23,6 +23,7 @@ public class MainSceneManager : MonoBehaviour
     private GameObject _splashSwipe;
     private GameObject _mainMenu;
     private GameObject _subMenu;
+    private GameObject _stageMenu;
 
     // sub Menus
     private GameObject _playGameMenu;
@@ -87,7 +88,9 @@ public class MainSceneManager : MonoBehaviour
 
     public IEnumerator StageMenuDestroy()
     {
-        yield return null;
+        var title = GameObject.Find("Title");
+        yield return new WaitWhile(() => title.activeSelf);
+        Destroy(_stageMenu);
     }
 
     public IEnumerator StageChanger()
@@ -104,7 +107,11 @@ public class MainSceneManager : MonoBehaviour
 
     public void SetSubMenu(MenuNumber menu)
     {
-        StartCoroutine(MainMenuDestroy());
+        if (_mainMenu != null)
+            StartCoroutine(MainMenuDestroy());
+        else if (_stageMenu != null)
+            StartCoroutine(StageMenuDestroy());
+
         switch (menu)
         {
             case MenuNumber.PlayGame:
@@ -124,7 +131,7 @@ public class MainSceneManager : MonoBehaviour
         {
             case MenuNumber.SchoolMenu:
                 _schoolMenu = Instantiate(_prefab[4], new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
-                _playGameMenu = _schoolMenu;
+                _stageMenu = _schoolMenu;
                 break;
         }
     }

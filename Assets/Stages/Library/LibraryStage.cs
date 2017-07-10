@@ -24,6 +24,8 @@ public class LibraryStage : AbstractStage {
     // Use this for initialization
     void Start()
     {
+        _hitNote = 0;
+        _totalNote = 0;
         //_bpm = 190.77989f;
         _bpm = 189;
         //_startDelay = 0.33f;
@@ -110,13 +112,19 @@ public class LibraryStage : AbstractStage {
 
     public override void OnSuccess()
     {
+        if (!_stageBgm.isPlaying)
+            return;
+
         //_AudioSource.PlayOneShot(_Success);
+        _hitNote++;
         _monitor.GetComponent<Monitor>().SetO();
     }
 
     public override void OnFail()
     {
-        Debug.Log("실패!!");
+        if (!_stageBgm.isPlaying)
+            return;
+
         _monitor.GetComponent<Monitor>().SetX();
     }
 }

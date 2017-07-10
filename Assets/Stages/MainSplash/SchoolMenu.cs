@@ -40,7 +40,7 @@ public class SchoolMenu : MonoBehaviour
         _back.SetClickCallBack(() =>
         {
             _anim.SetTrigger("Hide");
-            _mainSceneManager.SetMainMenu();
+            _mainSceneManager.SetSubMenu(MainSceneManager.MenuNumber.PlayGame);
         });
     }
 }
