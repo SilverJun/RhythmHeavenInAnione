@@ -19,7 +19,7 @@ public class StageScoreInfo : MonoBehaviour
     private string[,] _commentStrings =
     {
         {
-            "오! 리듬에 소질이 있군요!", "당신은 애니원 리듬스타!", "당신의 리듬에 감탄하고 갑니다!"
+            "오! 리듬에 소질이 있군요!", "당신이 애니원 리듬스타!", "당신의 리듬에 감탄하고 갑니다!"
         },
         {
             "음.. 조금 아쉽네요", "봐줄만 하네요...", "간발의 차이!"
