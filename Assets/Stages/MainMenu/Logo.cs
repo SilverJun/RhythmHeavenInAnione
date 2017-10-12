@@ -10,20 +10,17 @@ public class Logo : MonoBehaviour
     private bool _isSplash = true;
     private GameObject _info;
     private GameObject _arrow;
-
     private Rigidbody2D _rigid;
-    private Animator _anim;
 
 	// Use this for initialization
 	void Start ()
 	{
-	    _info = GameObject.Find("Info");
+	    _info = GameObject.Find("Info"); 
 	    _arrow = GameObject.Find("Arrow");
 
         PlayArrowAnimation();
 
 	    _rigid = GetComponent<Rigidbody2D>();
-	    _anim = GetComponent<Animator>();
 	}
 
     private void PlayArrowAnimation()
@@ -42,6 +39,19 @@ public class Logo : MonoBehaviour
         {
             GameObject.Find("Splash(Clone)").GetComponent<StartSplash>().DestroySplash();
         }
+
+        if (IsHitByMouse())
+        {
+            _isTouched = true;
+
+            _arrow.SetActive(false);
+            _info.GetComponent<Info>().SwapSprite();
+        }
+
+        if (Input.GetMouseButtonUp(0) && _isTouched)
+        {
+            MouseUpEvent();
+        }
     }
 
     void FixedUpdate()
@@ -51,21 +61,29 @@ public class Logo : MonoBehaviour
             _rigid.AddForce((Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * 1000.0f);
         }
     }
-
-    void OnMouseDown()
+    
+    public bool IsEnd()
     {
-        _isTouched = true;
-
-        _arrow.SetActive(false);
-        _info.GetComponent<Info>().SwapSprite();
+        return _isSplash;
     }
 
-    void OnMouseUp()
+    bool IsHitByMouse()
     {
-        if (!_isSplash) { return; }
-        
+        if (!Input.GetMouseButtonDown(0))
+            return false;
+
+        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+
+        return hit.collider != null && hit.collider.gameObject == this.gameObject;
+    }
+
+    void MouseUpEvent()
+    {
+        if (!_isSplash && !_isTouched) { return; }
+
         _isTouched = false;
-        
+
         if (_rigid.velocity.y > 20.0f)
         {
             _rigid.drag = 0.0f;
@@ -81,10 +99,5 @@ public class Logo : MonoBehaviour
         }
 
         _info.GetComponent<Info>().SwapSprite();
-    }
-
-    public bool IsEnd()
-    {
-        return _isSplash;
     }
 }

@@ -15,7 +15,7 @@ public class SchoolMenu : Menu
 
     IEnumerator ShowMenu()
     {
-        UIManager.OpenUI<UI>("Prefab/FadeOut");
+        UIManager.OpenUI<FadeOut>("Prefab/FadeOut");
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene("LibraryStart");
     }

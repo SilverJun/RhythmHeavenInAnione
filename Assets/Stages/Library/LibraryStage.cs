@@ -8,7 +8,6 @@ using Debug = UnityEngine.Debug;
 public class LibraryStage : AbstractStage {
 
     GameObject _monitor;
-    GameObject _player;
     GameObject _book;
 
     public AudioSource _AudioSource = new AudioSource();
@@ -32,11 +31,8 @@ public class LibraryStage : AbstractStage {
         _startDelay = 0.0f;
         _fourBeatSecond = 1.0f / (_bpm / 60.0f);
         Debug.Log(_fourBeatSecond);
-        //script read.
-        ParseSource();
 
         _monitor = GameObject.Find("모니터");
-        _player = GameObject.Find("캐릭터");
         _book = GameObject.Find("책");
 
         _stageBgm.Play();

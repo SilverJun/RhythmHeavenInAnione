@@ -7,52 +7,20 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
 
+using RAS;
+
 /// <summary>
 /// 모든 스테이지의 기본이 되는 클래스입니다.
 /// </summary>
-public class AbstractStage : MonoBehaviour {
+public class AbstractStage : MonoBehaviour
+{
+    [SerializeField]
+    private TextAsset _script;
 
-    /// <summary>
-    /// NoteSetting의 메소드의 정보값들을 저장할 구조체
-    /// </summary>
-    public struct NoteSetting
-    {
-        public string _name;
-        public float _beat;
-        public string _type;
+    private Parser _parser;
 
-        public NoteSetting(string name, float beat, string type)
-        {
-            _name = name;
-            _beat = beat;
-            _type = type;
-        }
-    }
-
-    /// <summary>
-    /// 스테이지의 한 패턴을 나타내는 구조체
-    /// </summary>
-    public struct Pattern
-    {
-        public string _name;
-        public NoteSetting[] _noteSetting;
-        public float _totalBeat;
-
-        public Pattern(string name, NoteSetting[] notes)
-        {
-            _name = name;
-            _noteSetting = notes;
-            _totalBeat = notes.Select(x => x._beat).ToArray().Sum();
-        }
-    }
-
-    private List<Pattern> _patterns = new List<Pattern>();
-    private Dictionary<string, System.Action<string[]>> _methods = new Dictionary<string, System.Action<string[]>>();
-    private Dictionary<int, Pattern> _actions = new Dictionary<int, Pattern>();
-    private Dictionary<string, NoteSetting> _noteSettings = new Dictionary<string, NoteSetting>();
     private bool _isTiming;
 
-    public TextAsset _script;
     public AudioSource _stageBgm;
     public AudioSource _metronome;
     
@@ -64,52 +32,21 @@ public class AbstractStage : MonoBehaviour {
 
     private void Awake()
     {
-        Application.targetFrameRate = 60;
-
         _stageBgm.playOnAwake = false;
         _metronome.playOnAwake = false;
         _isTiming = false;
 
-        _methods.Add("NoteSetting", ParseNoteSetting);
-        _methods.Add("Pattern", ParsePattern);
-        _methods.Add("Action", ParseAction);
+        _parser = new Parser(_script);
+        _parser.ParseSource();
     }
 
-    public void ParseSource()
-    {
-        var reader = new StringReader(_script.text);
-        string line;
-
-        while ((line = reader.ReadLine()) != null)
-        {
-            char[] split = { ' ', '(', ',', ')' };
-
-            var token = line.Split(split);
-
-            switch (token[0])
-            {
-                case "":
-                case " ":
-                case "\n":
-                case "\t":
-                case "//":
-                    continue;
-                default:
-                    token = token.Where(x => x != "").ToArray();
-                    ParseLine(token);
-                    break;
-            }
-        }
-        reader.Close();
-    }
-
-    protected float GetBeat(string str)
+    public static float GetBeat(string str)
     {
         string beatString = str;
 
         // 기본 박자 => 4 / 비트 => 4분음표는 1, 8분음표는 0.5
         float beat = 4 / float.Parse(beatString[0].ToString());
-        
+
         if (beatString.Length == 3)
         {
             // 셋잇단음표 구분
@@ -135,11 +72,6 @@ public class AbstractStage : MonoBehaviour {
         return beat *_fourBeatSecond * 1000.0f;
     }
 
-    private void ParseLine(string[] token)
-    {
-        if (_methods.ContainsKey(token[0])) { _methods[token[0]](token); }
-        else { Debug.Assert(false, "ParseLine Error!! unrecognized string " + token[0]); }
-    }
     
     /// <summary>
     /// 1. 스테이지 RAS에서 읽은 Action 메소드들을 준비.
@@ -153,7 +85,7 @@ public class AbstractStage : MonoBehaviour {
         yield return new WaitForSeconds(_startDelay);
         //_timer.Start();
 
-        foreach (var item in _actions)
+        foreach (var item in _parser._actions)
         {
             var time = BeatToRealMillisecond(item.Key);
 
@@ -190,22 +122,6 @@ public class AbstractStage : MonoBehaviour {
         yield return StartCoroutine(GoEndScene());
     }
 
-    private void ParseNoteSetting(string[] token)
-    {
-        _noteSettings.Add(token[1], new NoteSetting(token[1], GetBeat(token[2]), token[3]));
-    }
-
-    private void ParsePattern(string[] token)
-    {
-        List<string> tokenList = new List<string>(token);
-        NoteSetting[] noteList = _noteSettings.Where(x => tokenList.Contains(x.Key)).Select(x => x.Value).ToArray();
-        _patterns.Add(new Pattern(token[1], noteList));
-    }
-
-    private void ParseAction(string[] token)
-    {
-        _actions.Add(int.Parse(token[1]), _patterns.Find(x => x._name == token[2]));
-    }
 
     public virtual void OnAction(float nBeat, Pattern pattern)
     {
