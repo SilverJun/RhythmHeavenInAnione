@@ -6,16 +6,11 @@ public class Player : MonoBehaviour {
     
     public Animator _animator;
     private AnimatorStateInfo _currentBaseState;
-
-    // Use this for initialization
-    void Start () {
-        
-    }
-
+    
     // Update is called once per frame
-    void Update () {
+    void FixedUpdate () {
         // Key Input Process
-		if (Input.GetKeyDown(KeyCode.Space))
+		if (TouchManager.IsTouch)
         {
             _animator.SetTrigger("action");
             _animator.SetBool("idle", false);

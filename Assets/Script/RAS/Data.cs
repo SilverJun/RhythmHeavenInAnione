@@ -42,4 +42,53 @@ namespace RAS
             _totalBeat = notes.Select(x => x._beat).ToArray().Sum();
         }
     }
+
+    public enum NoteType
+    {
+        None,
+        Notice,
+        Touch,
+        Swipe
+    }
+
+    public struct Note
+    {
+        public NoteType _type;
+        public bool _isHit;
+        public float _genTime;
+        public string _noteName;
+
+        public Note(float genTime, string type, string noteName)
+        {
+            _isHit = false;
+            _genTime = genTime;
+            _type = NoteType.None;
+            _noteName = noteName;
+            switch (type)
+            {
+                case "Notice":
+                    _type = NoteType.Notice;
+                    break;
+                case "Touch":
+                    _type = NoteType.Touch;
+                    break;
+                case "Swipe":
+                    _type = NoteType.Swipe;
+                    break;
+                default:
+                    Debug.LogErrorFormat("Undefined Note Type!! {0}", type);
+                    break;
+            }
+        }
+
+        public static bool operator == (Note lhs, Note rhs)
+        {
+            return lhs._type == rhs._type && lhs._genTime.ToString() == rhs._genTime.ToString() && lhs._noteName == rhs._noteName;
+        }
+
+        public static bool operator != (Note lhs, Note rhs)
+        {
+            return !(lhs == rhs);
+        }
+    }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Diagnostics;
+using System.Runtime.Remoting.Channels;
+using NUnit.Framework.Interfaces;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Debug = UnityEngine.Debug;
@@ -14,12 +16,18 @@ using RAS;
 /// </summary>
 public class AbstractStage : MonoBehaviour
 {
+    // RAS
     [SerializeField]
     private TextAsset _script;
-
     private Parser _parser;
+    //
 
-    private bool _isTiming;
+    // Stage, Judgement
+    //private bool _isTiming;
+    private Note _currentNote;
+
+    private List<Note> _stageNostes = new List<Note>();
+    //
 
     public AudioSource _stageBgm;
     public AudioSource _metronome;
@@ -34,10 +42,11 @@ public class AbstractStage : MonoBehaviour
     {
         _stageBgm.playOnAwake = false;
         _metronome.playOnAwake = false;
-        _isTiming = false;
 
         _parser = new Parser(_script);
         _parser.ParseSource();
+
+        _totalNote = _parser._actions.Values.Sum((x) => x._noteSetting.Count((y) => y._type != "Notice"));
     }
 
     public static float GetBeat(string str)
@@ -72,6 +81,21 @@ public class AbstractStage : MonoBehaviour
         return beat *_fourBeatSecond * 1000.0f;
     }
 
+    private void InitNotes()
+    {
+        foreach (var action in _parser._actions)
+        {
+            var genTime = BeatToRealMillisecond(action.Key);
+            float offsetTime = 0.0f;
+            foreach (var note in action.Value._noteSetting)
+            {
+                _stageNostes.Add(new Note(genTime + offsetTime, note._type, note._name));
+                offsetTime += BeatToRealMillisecond(note._beat);
+            }
+        }
+
+        Debug.Log("InitNote End!");
+    }
     
     /// <summary>
     /// 1. 스테이지 RAS에서 읽은 Action 메소드들을 준비.
@@ -79,49 +103,57 @@ public class AbstractStage : MonoBehaviour
     /// 3. 해당 액션의 시간이 되면 액션 실행.
     /// 4. 2~3 반복.
     /// </summary>
-    /// <returns>코루틴에서 사용할 열거자를 리턴</returns>
     public IEnumerator StartStage()
     {
+        InitNotes();
         yield return new WaitForSeconds(_startDelay);
-        //_timer.Start();
-
-        foreach (var item in _parser._actions)
+        StartCoroutine(CheckHit());
+        
+        foreach (var note in _stageNostes)
         {
-            var time = BeatToRealMillisecond(item.Key);
-
-            // 액션 실행.
-
+            _currentNote = note;
             // 패턴 시작 전까지 대기.
-            while (time > _stageBgm.time * 1000.0f)
+            while (note._genTime > _stageBgm.time * 1000.0f)
             {
                 yield return new WaitForEndOfFrame();
             }
 
-            // OnAction 실행.
-            OnAction(item.Key, item.Value);
+            OnNote(note._noteName, note._genTime, note._type.ToString());
 
-            var noteGenTime = 0.0f;
-            // 패턴이 시작되면 해당하는 노트를 실행.
-            foreach (var note in item.Value._noteSetting)
-            {
-                OnNote(note._name, note._beat, note._type);
+            yield return new WaitForSeconds(0.06f);
 
-                _isTiming = (note._type != "Notice");
-                if (_isTiming)
-                    _totalNote++;
-                noteGenTime += BeatToRealMillisecond(note._beat);
-                while (time + noteGenTime > _stageBgm.time * 1000.0f)
-                {
-                    yield return new WaitForEndOfFrame();
-                }
-                if (_isTiming)
-                    OnFail();
-            }
+            if (_currentNote._type != NoteType.Notice && _currentNote._isHit == false)
+                OnFail();
         }
 
         yield return StartCoroutine(GoEndScene());
     }
 
+    IEnumerator CheckHit()
+    {
+        while (_stageBgm.isPlaying)
+        {
+            yield return new WaitUntil(() => TouchManager.IsTouch || TouchManager.IsSwipe);
+
+            var currentSecond = _stageBgm.time * 1000.0f;
+            
+            if (_currentNote._genTime - 330.0f <= currentSecond && currentSecond <= _currentNote._genTime + 330.0f)
+            {
+                Debug.Log("Hit Success!");
+                Debug.LogFormat("{0}, {1}", _currentNote._genTime, currentSecond);
+                OnSuccess();
+                _currentNote._isHit = true;
+            }
+            else
+            {
+                Debug.Log("Hit Error Fail!");
+                Debug.LogFormat("{0}, {1}", _currentNote._genTime, currentSecond);
+                OnFail();
+                _currentNote._isHit = false;
+            }
+            yield return new WaitForFixedUpdate();
+        }
+    }
 
     public virtual void OnAction(float nBeat, Pattern pattern)
     {
@@ -139,23 +171,6 @@ public class AbstractStage : MonoBehaviour
 
     public virtual void OnFail()
     {
-    }
-
-    /// <summary>
-    /// 판정 체크 함수.
-    /// </summary>
-    /// <returns>판정에 맞으면 true를 반환</returns>
-    public void CheckNoteTouch()
-    {
-        if (_isTiming)
-        {
-            _isTiming = false;
-            OnSuccess();
-        }
-        else
-        {
-            OnFail();
-        }
     }
 
     IEnumerator GoEndScene()

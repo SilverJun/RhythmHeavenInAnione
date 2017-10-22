@@ -25,6 +25,7 @@ namespace RAS
             _methods.Add("NoteSetting", ParseNoteSetting);
             _methods.Add("Pattern", ParsePattern);
             _methods.Add("Action", ParseAction);
+            //_methods.Add("GoStage", ParseGoStage);
         }
 
         public void ParseSource()

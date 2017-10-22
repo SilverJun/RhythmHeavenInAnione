@@ -5,8 +5,8 @@ using Debug = UnityEngine.Debug;
 
 // 1 beat delta = 60.0f / 187.0f(BPM)
 
-public class LibraryStage : AbstractStage {
-
+public class LibraryStage : AbstractStage
+{
     GameObject _monitor;
     GameObject _book;
 
@@ -24,10 +24,7 @@ public class LibraryStage : AbstractStage {
     void Start()
     {
         _hitNote = 0;
-        _totalNote = 0;
-        //_bpm = 190.77989f;
         _bpm = 189;
-        //_startDelay = 0.33f;
         _startDelay = 0.0f;
         _fourBeatSecond = 1.0f / (_bpm / 60.0f);
         Debug.Log(_fourBeatSecond);
@@ -40,14 +37,14 @@ public class LibraryStage : AbstractStage {
         StartCoroutine(StartStage());
     }
 
-    void FixedUpdate()
-    {
-        // 눌렀을 시, 노트 체크.
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            CheckNoteTouch();
-        }
-    }
+    //void FixedUpdate()
+    //{
+    //    // 눌렀을 시, 노트 체크.
+    //    //if (TouchManager.IsTouch)
+    //    //{
+    //    //    CheckNoteTouch();
+    //    //}
+    //}
 
     IEnumerator PlayMetronome()
     {
@@ -108,9 +105,6 @@ public class LibraryStage : AbstractStage {
 
     public override void OnSuccess()
     {
-        if (!_stageBgm.isPlaying)
-            return;
-
         //_AudioSource.PlayOneShot(_Success);
         _hitNote++;
         _monitor.GetComponent<Monitor>().SetO();
