@@ -7,7 +7,7 @@ public static class UIHelper
 {
     public static void AddButtonListener(Button button, Action action)
     {
-        button.GetComponent<Button>().onClick.AddListener(() => action());
+        button.onClick.AddListener(() => action());
     }
 
     public static void AddButtonListener(GameObject buttonObject, Action action)

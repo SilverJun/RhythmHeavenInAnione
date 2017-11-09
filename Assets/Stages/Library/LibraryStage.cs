@@ -1,14 +1,19 @@
-﻿using System.Collections;
-using System.Diagnostics;
+﻿using RAS;
+using System.Collections.Generic;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
-
-// 1 beat delta = 60.0f / 187.0f(BPM)
 
 public class LibraryStage : AbstractStage
 {
-    GameObject _monitor;
-    GameObject _book;
+    [SerializeField]
+    private GameObject _monitor;
+    [SerializeField]
+    private GameObject _book;
+    [SerializeField]
+    private GameObject _player;
+
+    private Animator _playerAnimator;
+    private Animator _bookAnimator;
+    private Animator _monitorAnimator;
 
     public AudioSource _AudioSource = new AudioSource();
     public AudioClip _One;
@@ -19,71 +24,76 @@ public class LibraryStage : AbstractStage
     public AudioClip _tThree;
     public AudioClip _tFour;
     //public AudioClip _Success;
-
-    // Use this for initialization
+    
     void Start()
     {
-        _hitNote = 0;
-        _bpm = 189;
-        _startDelay = 0.0f;
-        _fourBeatSecond = 1.0f / (_bpm / 60.0f);
-        Debug.Log(_fourBeatSecond);
-
-        _monitor = GameObject.Find("모니터");
-        _book = GameObject.Find("책");
-
-        _stageBgm.Play();
-        //StartCoroutine(PlayMetronome());
-        StartCoroutine(StartStage());
+        _playerAnimator = _player.GetComponent<Animator>();
+        _bookAnimator = _book.GetComponent<Animator>();
+        _monitorAnimator = _monitor.GetComponent<Animator>();
     }
 
-    //void FixedUpdate()
-    //{
-    //    // 눌렀을 시, 노트 체크.
-    //    //if (TouchManager.IsTouch)
-    //    //{
-    //    //    CheckNoteTouch();
-    //    //}
-    //}
-
-    IEnumerator PlayMetronome()
+    void FixedUpdate()
     {
-        yield return new WaitForSeconds(_startDelay);
-        while (true)
+        if (TouchManager.IsTouch)
         {
-            _metronome.Play();
-            yield return new WaitForSeconds(_fourBeatSecond);
+            SetPlayerAction();
         }
     }
+
+    /// Library Stage Functions
+    public void SetPlayerAction()
+    {
+        _playerAnimator.SetTrigger("action");
+    }
+    public void SetBookOne()
+    {
+        _bookAnimator.SetTrigger("One");
+    }
+    public void SetBookTwo()
+    {
+        _bookAnimator.SetTrigger("Two");
+    }
+    public void SetBookThree()
+    {
+        _bookAnimator.SetTrigger("Three");
+    }
+    public void SetMonitorO()
+    {
+        _monitorAnimator.SetTrigger("O");
+    }
+    public void SetMonitorX()
+    {
+        _monitorAnimator.SetTrigger("X");
+    }
+    ///
 
     /// Interface Implement.
     //public override void OnAction(float nBeat, Pattern pattern)
     //{
     //}
 
-    public override void OnNote(string name, float beat, string type)
+    public override void OnNote(Note note)
     {
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
-        switch (name)
+        switch (note._noteName)
         {
             case "OneNotice":
                 _AudioSource.PlayOneShot(_One);
-                _book.GetComponent<Book>().SetOne();
+                SetBookOne();
                 break;
             case "TwoNotice":
                 _AudioSource.PlayOneShot(_Two);
-                _book.GetComponent<Book>().SetTwo();
+                SetBookTwo();
                 break;
-
             case "ThreeOneNotice":
                 _AudioSource.PlayOneShot(_tOne);
-                _book.GetComponent<Book>().SetThree();
+                SetBookThree();
                 break;
             case "ThreeTwoNotice":
-                _book.GetComponent<Book>().SetThree();
+                SetBookThree();
                 break;
             case "ThreeThreeNotice":
-                _book.GetComponent<Book>().SetThree();
+                SetBookThree();
                 break;
             case "TwoCheck":
                 _AudioSource.PlayOneShot(_TwoNote);
@@ -105,16 +115,11 @@ public class LibraryStage : AbstractStage
 
     public override void OnSuccess()
     {
-        //_AudioSource.PlayOneShot(_Success);
-        _hitNote++;
-        _monitor.GetComponent<Monitor>().SetO();
+        SetMonitorO();
     }
 
     public override void OnFail()
     {
-        if (!_stageBgm.isPlaying)
-            return;
-
-        _monitor.GetComponent<Monitor>().SetX();
+        SetMonitorX();
     }
 }

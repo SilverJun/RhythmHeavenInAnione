@@ -1,6 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-using UnityEngine.EventSystems;
+﻿using System.Collections;
+using UnityEngine;
 
 /// <summary>
 /// 게임에서 사용되는 터치 관련 판정을 하는 클래스입니다.
