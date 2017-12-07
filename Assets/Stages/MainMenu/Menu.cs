@@ -17,7 +17,7 @@ public class Menu : UI
     protected void AnimMenuDown()
     {
         _menuDown = DOTween.Sequence();
-        _menuDown.Append(GetComponent<RectTransform>().DOMoveY(GetComponent<RectTransform>().position.y - 10.0f, 1.0f));
+        _menuDown.Append(GetComponent<RectTransform>().DOMoveY(0.0f, 1.0f));
         _menuDown.SetEase(Ease.OutExpo);
         _menuDown.AppendCallback(AnimMenuHighlight);
         _menuDown.Play();
@@ -26,12 +26,16 @@ public class Menu : UI
     protected void AnimMenuHighlight()
     {
         _menuHighlight = DOTween.Sequence();
-        _menuHighlight.Append(Vars["menu1"].GetComponent<RectTransform>().DOScale(new Vector3(1.3f, 1.3f, 1.0f), 1.0f));
-        _menuHighlight.Append(Vars["menu1"].GetComponent<RectTransform>().DOScale(Vector3.one, 1.0f));
-        _menuHighlight.Append(Vars["menu2"].GetComponent<RectTransform>().DOScale(new Vector3(1.3f, 1.3f, 1.0f), 1.0f));
-        _menuHighlight.Append(Vars["menu2"].GetComponent<RectTransform>().DOScale(Vector3.one, 1.0f));
-        _menuHighlight.Append(Vars["menu3"].GetComponent<RectTransform>().DOScale(new Vector3(1.3f, 1.3f, 1.0f), 1.0f));
-        _menuHighlight.Append(Vars["menu3"].GetComponent<RectTransform>().DOScale(Vector3.one, 1.0f));
+
+        var rect = Vars["menu1"].GetComponent<RectTransform>();
+        _menuHighlight.Append(Vars["menu1"].GetComponent<RectTransform>().DOScale(rect.localScale * 1.3f, 1.0f));
+        _menuHighlight.Append(Vars["menu1"].GetComponent<RectTransform>().DOScale(rect.localScale, 1.0f));
+        rect = Vars["menu2"].GetComponent<RectTransform>();
+        _menuHighlight.Append(Vars["menu2"].GetComponent<RectTransform>().DOScale(rect.localScale * 1.3f, 1.0f));
+        _menuHighlight.Append(Vars["menu2"].GetComponent<RectTransform>().DOScale(rect.localScale, 1.0f));
+        rect = Vars["menu3"].GetComponent<RectTransform>();
+        _menuHighlight.Append(Vars["menu3"].GetComponent<RectTransform>().DOScale(rect.localScale * 1.3f, 1.0f));
+        _menuHighlight.Append(Vars["menu3"].GetComponent<RectTransform>().DOScale(rect.localScale, 1.0f));
         _menuHighlight.SetLoops(-1);
         _menuHighlight.Play();
     }

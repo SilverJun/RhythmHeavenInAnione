@@ -1,0 +1,14 @@
+{
+  "Library" : {
+    "StageName": "Library",
+    "StageTitle": "도서관 알바",
+    "StageStatus": "UnLock",
+    "StageIntro": "C학년 F반 HJH학생이 점심 도서부를 빼버리는 바람에 급하게 점심 도서부원을 모집합니다!"
+  },
+  "Auditorium" : {
+    "StageName": "Auditorium",
+    "StageTitle": "팬클럽",
+    "StageStatus": "Lock",
+    "StageIntro": "애니원 최고 가왕, 황태자와 아이들의 연주가 있습니다! 응원하러 가볼까요?"
+  }
+}

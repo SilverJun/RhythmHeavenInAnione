@@ -30,7 +30,7 @@ public class BaseStage : MonoBehaviour
     private float _bpm;
     private float _fourBeatSecond;
 
-    void Awake()
+    public void Awake()
     {
         _stageBgm.playOnAwake = false;
         _metronome.playOnAwake = false;
@@ -128,7 +128,10 @@ public class BaseStage : MonoBehaviour
 
         foreach (var note in noteList)
         {
-            StartCoroutine(CheckHit(note));
+            if (note._type != NoteType.Notice)
+            {
+                StartCoroutine(CheckHit(note));
+            }
             yield return new WaitWhile(() => _stageBgm.time <= note._genTime);
             _stage.OnNote(note);
         }
@@ -162,15 +165,14 @@ public class BaseStage : MonoBehaviour
 
     IEnumerator GoEndScene()
     {
-        //_hitNote = _stageNostes.Count((x) => x._isSucceed);
-
-        Debug.Log(_hitNote);
-
-        StageScoreInfo.SetScore(_hitNote, _totalNote);
         yield return new WaitForSeconds(2.0f);
-        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject);
         yield return new WaitForSeconds(2.0f);
-        SceneManager.LoadSceneAsync("EndStage");
+
+        var ui = UIManager.OpenUI<EndStageUI>(Resources.Load("Prefab/EndStageUI") as GameObject);
+        _stage.OnEnd(ui);
+        ui.SetScore(_hitNote, _totalNote);
+        _stageObject.SetActive(false);
     }
 
     public float BeatToRealMillisecond(float beat)
@@ -187,5 +189,10 @@ public class BaseStage : MonoBehaviour
     {
         _bpm = bpm;
         _fourBeatSecond = 1.0f / (_bpm / 60.0f);
+    }
+
+    public void ExitStage()
+    {
+        _stage.OnExit();
     }
 }

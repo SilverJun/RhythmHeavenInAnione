@@ -9,15 +9,14 @@ public class SchoolMenu : Menu
     protected override void Start()
     {
         base.Start();
-        UIHelper.AddButtonListener(Vars["menu1"], () => StartCoroutine(ShowMenu()));
+        UIHelper.AddButtonListener(Vars["menu1"], () => ShowStageInfo("Library"));
         UIHelper.AddButtonListener(Vars["back"], () => AnimHide(ShowBackMenu));
     }
 
-    IEnumerator ShowMenu()
+    void ShowStageInfo(string stageName)
     {
-        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
-        yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene("LibraryStart");
+        StageInfoUI._selectedStage = stageName;
+        UIManager.OpenUI<StageInfoUI>("Prefab/StageInfoUI");
     }
 
     void ShowBackMenu()

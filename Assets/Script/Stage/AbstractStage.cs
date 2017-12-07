@@ -4,6 +4,7 @@ using UnityEngine;
 
 /// <summary>
 /// 모든 스테이지의 기본이 되는 클래스입니다.
+/// 각종 메서드의 인터페이스를 제공합니다.
 /// </summary>
 public class AbstractStage : MonoBehaviour
 {
@@ -19,6 +20,14 @@ public class AbstractStage : MonoBehaviour
     }
 
     public virtual void OnFail()
+    {
+    }
+
+    public virtual void OnEnd(EndStageUI ui)
+    {
+    }
+
+    public virtual void OnExit()
     {
     }
 }

@@ -42,6 +42,8 @@ public class UIManager : MonoBehaviour
                 {
                     GameObject uiManagerPrefab = Resources.Load<GameObject>("Prefab/Canvas-UIManager");
                     instance = Instantiate<GameObject>(uiManagerPrefab).GetComponent<UIManager>();
+                    if (GameObject.Find("EventSystem") == null)
+                        Instantiate(Resources.Load("Prefab/EventSystem"));
                 }
             }
 
