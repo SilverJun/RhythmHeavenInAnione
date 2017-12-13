@@ -30,7 +30,7 @@ public class ClassStage : AbstractStage
     }
 
 
-    /// Gym Stage Functions
+    /// Class Stage Functions
     public void SetPlayerAction()
     {
         _playerAnim.SetTrigger("Action");
@@ -61,7 +61,7 @@ public class ClassStage : AbstractStage
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "ExteriorMenu";
+        MenuInitializer._initStageName = "SchoolMenu";
     }
 
     public override void OnExit()
