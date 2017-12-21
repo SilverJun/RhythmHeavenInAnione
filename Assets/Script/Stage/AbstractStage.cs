@@ -15,11 +15,11 @@ public class AbstractStage : MonoBehaviour
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
     }
 
-    public virtual void OnSuccess()
+    public virtual void OnSuccess(Note note)
     {
     }
 
-    public virtual void OnFail()
+    public virtual void OnFail(Note note)
     {
     }
 

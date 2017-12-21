@@ -237,7 +237,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 2ec5e530e2665444f8c3cf9d37649804, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.61
   m_Pitch: 1
@@ -342,6 +342,9 @@ MonoBehaviour:
   _stageObject: {fileID: 0}
   _stageBgm: {fileID: 82329044633048210}
   _metronome: {fileID: 82908228384567312}
+  _startDelay: 0
+  _bpm: 0
+  _fourBeatSecond: 0
 --- !u!124 &124559451526234994
 Behaviour:
   m_ObjectHideFlags: 1

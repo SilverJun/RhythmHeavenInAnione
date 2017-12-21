@@ -1,5 +1,4 @@
 ﻿using RAS;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -90,11 +89,16 @@ public class LibraryStage : AbstractStage
                 _AudioSource.PlayOneShot(_tOne);
                 SetBookThree();
                 break;
-            case "ThreeTwoNotice":
+            case "ThreeOneCheck":
+                _AudioSource.PlayOneShot(_tTwo);
                 SetBookThree();
                 break;
-            case "ThreeThreeNotice":
+            case "ThreeTwoCheck":
+                _AudioSource.PlayOneShot(_tThree);
                 SetBookThree();
+                break;
+            case "ThreeThreeCheck":
+                _AudioSource.PlayOneShot(_tFour);
                 break;
             case "TwoCheck":
                 _AudioSource.PlayOneShot(_TwoNote);
@@ -102,24 +106,15 @@ public class LibraryStage : AbstractStage
             case "OneCheck":
                 _AudioSource.PlayOneShot(_One);
                 break;
-            case "ThreeOneCheck":
-                _AudioSource.PlayOneShot(_tTwo);
-                break;
-            case "ThreeTwoCheck":
-                _AudioSource.PlayOneShot(_tThree);
-                break;
-            case "ThreeThreeCheck":
-                _AudioSource.PlayOneShot(_tFour);
-                break;
         }
     }
 
-    public override void OnSuccess()
+    public override void OnSuccess(Note note)
     {
         SetMonitorO();
     }
 
-    public override void OnFail()
+    public override void OnFail(Note note)
     {
         SetMonitorX();
     }

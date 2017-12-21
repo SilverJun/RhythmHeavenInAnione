@@ -17,19 +17,21 @@ namespace RAS
         public List<Command> _initCommands = new List<Command>();
         private List<Command> _currentSheet;
 
-        private TextAsset _script;
+        private string _script;
 
         // stage prefab.
         public BaseStage _baseStage;
         private float _currentBeat;
 
-        public Parser(TextAsset script)
+        public Parser(BaseStage baseStage, string script)
         {
             _script = script;
+            _baseStage = baseStage;
             
             _methods.Add("NoteSetting", ParseNoteSetting);
             _methods.Add("SetPattern", ParseSetPattern);
             _methods.Add("Action", ParseAction);
+            _methods.Add("SetStartDelay", ParseSetStartDelay);
             _methods.Add("SetBpm", ParseSetBpm);
             _methods.Add("SetStage", ParseSetStage);
             _methods.Add("Init", ParseInit);
@@ -39,12 +41,12 @@ namespace RAS
 
         public void ParseSource()
         {
-            var reader = new StringReader(_script.text);
+            var reader = new StringReader(_script);
             string line;
 
             while ((line = reader.ReadLine()) != null)
             {
-                char[] split = { ' ', '(', ',', ')', '{', '}', '[', ']' };
+                char[] split = { ' ', '\t', '(', ',', ')', '{', '}', '[', ']' };
 
                 var token = line.Split(split);
 
@@ -113,6 +115,11 @@ namespace RAS
             _currentSheet.Add(new Command(_currentBeat, token[0], stage => { stage.SetBpm(float.Parse(token[1])); }));
         }
 
+        private void ParseSetStartDelay(string[] token)
+        {
+            _currentSheet.Add(new Command(_currentBeat, token[0], stage => { stage._startDelay = float.Parse(token[1]); }));
+        }
+
         private void ParseSetStage(string[] token)
         {
             _currentSheet.Add(new Command(_currentBeat, token[0], stage =>
@@ -121,8 +128,9 @@ namespace RAS
                 if (stage._stageObject != null)
                     GameObject.Destroy(stage._stageObject);
 
-                stage._stageObject = GameObject.Instantiate(Resources.Load("Prefab/" + token[1]), Vector3.zero, Quaternion.identity) as GameObject;
+                stage._stageObject = GameObject.Instantiate(Resources.Load("Prefab/Stage/" + token[1]), Vector3.zero, Quaternion.identity) as GameObject;
                 stage._stage = stage._stageObject.GetComponent("AbstractStage") as AbstractStage;
+                stage._stage._baseStage = _baseStage;
             }));
         }
 

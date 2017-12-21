@@ -8,10 +8,20 @@ public class MenuInitializer : MonoBehaviour
     public static bool _isFirstStart = true;
     [SerializeField]
     private string _editOnlyInitStage = "";
-    public static string _initStageName = "StartEffect";
+    public static string _initStageName = "";
     
     void Start()
     {
+        //if (_initStageName == "")
+        //{
+        //    _initStageName = "StartEffect";
+        //    _isFirstStart = true;
+        //}
+        //else
+        //{
+        //    _isFirstStart = false;
+        //}
+
         // For Debug, Test With Unity Editer.
         if (_editOnlyInitStage != "")
         {
@@ -24,8 +34,12 @@ public class MenuInitializer : MonoBehaviour
             Instantiate(Resources.Load("Prefab/Splash") as GameObject);
             _isFirstStart = false;
         }
+        else
+        {
+            Instantiate(Resources.Load("Prefab/FadeIn") as GameObject);
+        }
 
-        UIManager.OpenUI<StartEffect>(Resources.Load("Prefab/" + _initStageName) as GameObject);
+        UIManager.OpenUI<UI>(Resources.Load("Prefab/" + _initStageName) as GameObject);
         Destroy(gameObject);
     }
 }

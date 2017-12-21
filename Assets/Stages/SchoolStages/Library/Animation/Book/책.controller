@@ -207,7 +207,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Book_Two
-  m_Speed: 2.25
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101676910009083458}
@@ -231,7 +231,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Book_One
-  m_Speed: 2.25
+  m_Speed: 1
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101490287593853400}
@@ -255,7 +255,7 @@ AnimatorState:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Book_Three
-  m_Speed: 4.25
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1101855545580680488}

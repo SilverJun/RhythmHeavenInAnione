@@ -82,11 +82,11 @@ public class AuditoriumStage : AbstractStage
         }
     }
 
-    public override void OnSuccess()
+    public override void OnSuccess(Note note)
     {
     }
 
-    public override void OnFail()
+    public override void OnFail(Note note)
     {
     }
 

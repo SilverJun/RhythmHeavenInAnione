@@ -12,11 +12,11 @@ EditorBuildSettings:
     path: Assets/Stages/MainMenu/MainSplash.unity
     guid: d4d3786cf15fccc44b6d5e003f4b1554
   - enabled: 1
-    path: Assets/Stages/SchoolStages/Library/LibraryStart.unity
-    guid: 871af024552f02b40b83e0801ecdce87
-  - enabled: 1
-    path: Assets/Stages/SchoolStages/Library/LibraryStage.unity
-    guid: c279dc879aeac2a46a27f999294df335
-  - enabled: 1
     path: Assets/Stages/EndStage/EndStage.unity
     guid: f8b91f18536828b4ca55e3ceba956c2b
+  - enabled: 1
+    path: Assets/Stages/AbstractStage/AbstractStart.unity
+    guid: da27dc72e387cbd43b2aa09923f00198
+  - enabled: 1
+    path: Assets/Stages/AbstractStage/AbstractStage.unity
+    guid: 466d29eed656bdb42a4ec7d141d41773

@@ -8,6 +8,7 @@ namespace JSONForm
         public string StageName;
         public string StageTitle;
         public string StageStatus;
+        public float Percent;
         public string StageIntro;
 
         public string GetStageStatusString()

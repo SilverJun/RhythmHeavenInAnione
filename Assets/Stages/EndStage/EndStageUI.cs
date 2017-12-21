@@ -83,6 +83,10 @@ public class EndStageUI : UI
     {
         HitScore = hit;
         MaxScore = max;
+
+        float per = (float)Math.Round((double)HitScore / MaxScore * 100.0f, 1);
+        // TODO : 점수에 따라 상태 다르게 하기.
+        StageManager.Instance.UpdateStageInfo("Clear", per);
     }
 
     public void GoMainMenu()

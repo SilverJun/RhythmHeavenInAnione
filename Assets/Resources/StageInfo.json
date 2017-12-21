@@ -1,14 +1,73 @@
 {
-  "Library" : {
+  "Library": {
     "StageName": "Library",
-    "StageTitle": "도서관 알바",
+    "StageTitle": "도서부원 모집중",
     "StageStatus": "UnLock",
+    "Percent": 0.0,
     "StageIntro": "C학년 F반 HJH학생이 점심 도서부를 빼버리는 바람에 급하게 점심 도서부원을 모집합니다!"
   },
-  "Auditorium" : {
+
+  "Auditorium": {
     "StageName": "Auditorium",
-    "StageTitle": "팬클럽",
-    "StageStatus": "Lock",
+    "StageTitle": "보늬축제",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
     "StageIntro": "애니원 최고 가왕, 황태자와 아이들의 연주가 있습니다! 응원하러 가볼까요?"
+  },
+
+  "Class": {
+    "StageName": "Class",
+    "StageTitle": "이번주 주번",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
+    "StageIntro": "교실설명ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ"
+  },
+
+  "Gym": {
+    "StageName": "Gym",
+    "StageTitle": "검도",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
+    "StageIntro": "검도 ㅂㄴㅇㄻㄴㄷㅍㅁㅈㄴㄷㄻㄴ"
+  },
+
+  "Stand": {
+    "StageName": "Stand",
+    "StageTitle": "아침점호",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
+    "StageIntro": "아침점호 뷁뷁뷁ㅁ냐ㅣ우리먀ㅜ니ㅏㄷㄹ"
+  },
+
+  "Playground": {
+    "StageName": "Playground",
+    "StageTitle": "줄다리기",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
+    "StageIntro": "줄다리기입니다 뱢둘미냐둘마너ㅜㄷ림ㄴ"
+  },
+
+  "Room": {
+    "StageName": "Room",
+    "StageTitle": "가정의날 청소",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
+    "StageIntro": "가정의날이니 청소를 해야죠 숩ㄴ우럄냐러ㅑㄴㅇ"
+  },
+
+  "PERoom": {
+    "StageName": "PERoom",
+    "StageTitle": "런닝머신",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
+    "StageIntro": "운동을 해야 살도 빠지고 건강해집니다 ㅂ누야립주딜마ㅓㄴ"
+  },
+
+  "Store": {
+    "StageName": "Store",
+    "StageTitle": "뭬점뭬점",
+    "StageStatus": "UnLock",
+    "Percent": 0.0,
+    "StageIntro": "뭬점가서 빵이나 사먹ㅇ어야죠 ㅂㅈ두리뱌ㅏㅈㄷㄹ"
   }
 }

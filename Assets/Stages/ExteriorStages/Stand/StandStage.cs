@@ -1,0 +1,114 @@
+﻿using System.Collections;
+using RAS;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+public class StandStage : AbstractStage
+{
+    // 태훈이
+    [SerializeField] private GameObject _taehoon;
+    private Animator _taehoonAnim;
+    [SerializeField] private GameObject _game;
+    private Animator _gameAnim;
+    [SerializeField] private GameObject _ani;
+    private Animator _aniAnim;
+    [SerializeField] private GameObject _player; // cartoon
+    private Animator _playerAnim;
+
+    [SerializeField] private GameObject _clear;
+    [SerializeField] private GameObject _fail;
+
+    void Start ()
+    {
+        _taehoonAnim = _taehoon.GetComponent<Animator>();
+        _gameAnim = _game.GetComponent<Animator>();
+        _aniAnim = _ani.GetComponent<Animator>();
+        _playerAnim = _player.GetComponent<Animator>();
+    }
+	
+	void FixedUpdate ()
+    {
+        if (TouchManager.IsTouch)
+        {
+            
+        }
+	}
+
+    /// StandStage functions
+    void SetPlayerAction()
+    {
+        _playerAnim.SetTrigger("Action");
+    }
+    void SetTaehoonAction()
+    {
+        _taehoonAnim.SetTrigger("Action");
+    }
+    void SetGameAction()
+    {
+        _gameAnim.SetTrigger("Action");
+    }
+    void SetAniAction()
+    {
+        _aniAnim.SetTrigger("Action");
+    }
+
+    void SetAnimSpeed()
+    {
+        //_taehoonAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        //_gameAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        //_aniAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        //_playerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _taehoonAnim.SetFloat("AnimSpeed", 1.0f);
+        _gameAnim.SetFloat("AnimSpeed", 1.0f);
+        _aniAnim.SetFloat("AnimSpeed", 1.0f);
+        _playerAnim.SetFloat("AnimSpeed", 1.0f);
+    }
+
+    void SetClear()
+    {
+        _clear.SetActive(true);
+        StartCoroutine(AutoDisactive(_clear));
+    }
+
+    void SetFail()
+    {
+        _fail.SetActive(true);
+        StartCoroutine(AutoDisactive(_fail));
+    }
+
+    IEnumerator AutoDisactive(GameObject obj)
+    {
+        yield return new WaitForSeconds(0.5f);
+        obj.SetActive(false);
+    }
+    /// 
+
+    public override void OnNote(Note note)
+    {
+        // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
+        switch (note._noteName)
+        {
+
+        }
+    }
+
+    public override void OnSuccess(Note note)
+    {
+        SetClear();
+    }
+
+    public override void OnFail(Note note)
+    {
+        SetFail();
+    }
+
+    public override void OnEnd(EndStageUI ui)
+    {
+        MenuInitializer._initStageName = "ExteriorMenu";
+    }
+
+    public override void OnExit()
+    {
+        SceneManager.LoadScene("MainSplash");
+    }
+}

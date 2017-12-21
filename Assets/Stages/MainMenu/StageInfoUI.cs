@@ -1,14 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using DG.Tweening;
 using JSONForm;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class StageInfoUI : UI
 {
-    public static string _selectedStage;
     private StageInfo _stageInfo;
 
     void Start()
@@ -19,7 +17,7 @@ public class StageInfoUI : UI
 
     void SetupUI()
     {
-        _stageInfo = StageManager.Instance.GetStageInfo(_selectedStage);
+        _stageInfo = StageManager.Instance.GetStageInfo(StageManager.Instance._currentStageName);
         //string status = _stageInfo.GetStageStatusString();
         Vars["stageImage"].GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/UI/" + _stageInfo.StageName);
         Vars["stageImage"].GetComponent<Image>().preserveAspect = true;
@@ -56,8 +54,8 @@ public class StageInfoUI : UI
 
     IEnumerator _StartStage()
     {
-        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject, new Vector3(0.0f, 0.0f, 0.0f), Quaternion.identity);
+        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject);
         yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene("LibraryStart");
+        StageManager.Instance.SetStage(_stageInfo.StageName);
     }
 }

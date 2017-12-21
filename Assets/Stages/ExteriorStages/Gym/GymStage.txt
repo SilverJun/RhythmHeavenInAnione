@@ -1,0 +1,26 @@
+﻿//          _____                  ____            _______
+//         / __  |                / _  |          /  ____/
+//        / /__| |               / /_| |         /  /___
+//       / __   /               / ___  |        /___   /
+//      / /  | |               / /   | |       ____/  /
+//     /_/   |_| hythm moa in /_/    |_|nione /______/cript File
+//
+//     RAS version 2.0. test
+//     Designed By Silverjun, Generated At 2017/10/25
+//
+//     Stage - Gym
+//
+
+Init {
+    SetBpm(124.0)
+    SetStage(Gym)
+    
+    //NoteSetting(OneNotice, 4, Notice)
+    //NoteSetting(OneCheck, 8, Touch)
+
+    //SetPattern(One, OneNotice, OneCheck)
+} 
+
+Sheet {
+
+}

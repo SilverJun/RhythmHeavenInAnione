@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 
 public class BaseStage : MonoBehaviour
@@ -11,6 +10,7 @@ public class BaseStage : MonoBehaviour
     // RAS
     [SerializeField]
     private TextAsset _script;
+    private string _scriptText;
     private Parser _parser;
     //
 
@@ -26,20 +26,32 @@ public class BaseStage : MonoBehaviour
     private int _totalNote;
     private int _hitNote;
 
-    private float _startDelay;
-    private float _bpm;
-    private float _fourBeatSecond;
+    public float _startDelay;
+    public float _bpm;
+    public float _fourBeatSecond;
+    private float _judgementSecond;
 
     public void Awake()
     {
         _stageBgm.playOnAwake = false;
         _metronome.playOnAwake = false;
 
-        // RAS 파싱작업.
-        _parser = new Parser(_script);
-        _parser.ParseSource();
+        // StageManger에서 스테이지 정보 불러와서 초기화.
+        _stageBgm.clip = StageManager.Instance._stageBgm;
+        if (_script == null)
+        {
+            _scriptText = StageManager.Instance._stageScript;
+        }
+        else
+        {
+            _scriptText = _script.text;
+        }
 
-        _startDelay = 0.0f;
+        // RAS 파싱작업.
+        _parser = new Parser(this, _scriptText);
+        //_parser = new Parser(this, StageManager._stageScript);
+        _parser.ParseSource();
+        
         _hitNote = 0;
         //_totalNote = _parser._actions.Values.Sum((x) => x._noteSetting.Count((y) => y._type != "Notice"));
 
@@ -48,6 +60,7 @@ public class BaseStage : MonoBehaviour
             switch (item._commandName)
             {
                 case "SetBpm":
+                case "SetStartDelay":
                 case "SetStage":
                 case "SetPattern":
                     item._action(this);
@@ -59,18 +72,13 @@ public class BaseStage : MonoBehaviour
         }
 
         _stageBgm.Play();
-        //StartCoroutine(PlayMetronome());
+        //InvokeRepeating("PlayMetronome", _startDelay, _fourBeatSecond);
         StartCoroutine(StartStage());
     }
 
-    public IEnumerator PlayMetronome()
+    public void PlayMetronome()
     {
-        yield return new WaitForSeconds(_startDelay);
-        while (true)
-        {
-            _metronome.Play();
-            yield return new WaitForSeconds(_fourBeatSecond);
-        }
+        _metronome.Play();
     }
 
     /// <summary>
@@ -90,6 +98,7 @@ public class BaseStage : MonoBehaviour
             switch (item._commandName)
             {
                 case "SetBpm":
+                case "SetStartDelay":
                 case "SetStage":
                 case "SetPattern":
                     yield return new WaitWhile(() => _stageBgm.time <= BeatToRealSecond(item._beat));
@@ -113,44 +122,61 @@ public class BaseStage : MonoBehaviour
     {
         var pattern = _parser._patterns.Find((x) => x._name == action._patternName);
         var genTime = BeatToRealSecond(action._beat);
+        _judgementSecond = BeatToRealSecond(0.15f);
+
+        Debug.Log(_judgementSecond);
+
         var noteList = new List<Note>();
 
         float offsetTime = 0.0f;
 
         foreach (var note in pattern._noteSetting)
         {
-            noteList.Add(new Note(genTime + offsetTime, note._type, note._name));
+            _stageNostes.Add(new Note(genTime + offsetTime, note._type, note._name));
+            noteList.Add(_stageNostes[_stageNostes.Count-1]);
             offsetTime += BeatToRealSecond(note._beat);
 
             if (noteList.Last()._type != NoteType.Notice)
                 _totalNote++;
         }
-
-        foreach (var note in noteList)
+        
+        for (int i = 0; i < noteList.Count; i++)
         {
-            if (note._type != NoteType.Notice)
+            if (noteList[i]._type != NoteType.Notice)
             {
-                StartCoroutine(CheckHit(note));
+                StartCoroutine(CheckHit(noteList[i]));
             }
-            yield return new WaitWhile(() => _stageBgm.time <= note._genTime);
-            _stage.OnNote(note);
+            yield return new WaitWhile(() => _stageBgm.time <= noteList[i]._genTime);
+            _stage.OnNote(noteList[i]);
         }
     }
 
     IEnumerator CheckHit(Note note)
     {
-        yield return new WaitForSeconds(note._genTime - 0.033f - _stageBgm.time);
+        yield return new WaitForSeconds(note._genTime - _judgementSecond - _stageBgm.time);
 
-        while (_stageBgm.time <= note._genTime + 0.033f && !note._isHit)
+        while (_stageBgm.time <= note._genTime + _judgementSecond && !note._isHit)
         {
             // TODO : Touch, Swipe 판정 노트와 비교해서 맞추기.
             if (TouchManager.IsTouch || TouchManager.IsSwipe)
             {
-                Debug.Log("Hit Success!");
-                Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
-                _stage.OnSuccess();
-                note._isHit = true;
-                _hitNote++;
+                if (note._isHit == false)
+                {
+                    Debug.Log("Hit Success!");
+                    Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
+                    _stage.OnSuccess(note);
+                    note._isSucceed = true;
+                    note._isHit = true;
+                    _hitNote++;
+                }
+                else
+                {
+                    Debug.Log("Hit Already!");
+                    Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
+                    _stage.OnFail(note);
+                    note._isHit = false;
+                    _hitNote--;
+                }
             }
             yield return new WaitForFixedUpdate();
         }
@@ -159,7 +185,7 @@ public class BaseStage : MonoBehaviour
         {
             Debug.Log("Hit Fail!");
             Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
-            _stage.OnFail();
+            _stage.OnFail(note);
         }
     }
 
@@ -189,6 +215,11 @@ public class BaseStage : MonoBehaviour
     {
         _bpm = bpm;
         _fourBeatSecond = 1.0f / (_bpm / 60.0f);
+    }
+
+    public float GetAnimSpeed()
+    {
+        return _bpm / 60.0f;
     }
 
     public void ExitStage()
