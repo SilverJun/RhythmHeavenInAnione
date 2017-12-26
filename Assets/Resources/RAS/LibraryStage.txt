@@ -12,7 +12,7 @@
 //
 
 Init {
-    SetStartDelay(0.35)
+    SetStartDelay(0.035)
     SetBpm(189.0)
     SetStage(Library)
     

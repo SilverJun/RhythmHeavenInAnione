@@ -70,7 +70,7 @@ public class BaseStage : MonoBehaviour
                     break;
             }
         }
-
+        
         _stageBgm.Play();
         //InvokeRepeating("PlayMetronome", _startDelay, _fourBeatSecond);
         StartCoroutine(StartStage());
@@ -80,7 +80,7 @@ public class BaseStage : MonoBehaviour
     {
         _metronome.Play();
     }
-
+    
     /// <summary>
     /// 1. 스테이지 RAS에서 읽은 Action 메소드들을 준비.
     /// 2. Action리스트를 순회하면서 다음 실행할 노트를 미리 current Note에 저장
@@ -89,8 +89,6 @@ public class BaseStage : MonoBehaviour
     /// </summary>
     public IEnumerator StartStage()
     {
-        yield return new WaitForSeconds(_startDelay);
-        
         //StartCoroutine(CheckHit());
         
         foreach (var item in _parser._sheet)
@@ -122,9 +120,7 @@ public class BaseStage : MonoBehaviour
     {
         var pattern = _parser._patterns.Find((x) => x._name == action._patternName);
         var genTime = BeatToRealSecond(action._beat);
-        _judgementSecond = BeatToRealSecond(0.15f);
-
-        Debug.Log(_judgementSecond);
+        _judgementSecond = BeatToRealSecond(0.3f);
 
         var noteList = new List<Note>();
 
@@ -153,9 +149,9 @@ public class BaseStage : MonoBehaviour
 
     IEnumerator CheckHit(Note note)
     {
-        yield return new WaitForSeconds(note._genTime - _judgementSecond - _stageBgm.time);
+        yield return new WaitWhile(() => note._genTime - _judgementSecond >= _stageBgm.time + _startDelay);
 
-        while (_stageBgm.time <= note._genTime + _judgementSecond && !note._isHit)
+        while (_stageBgm.time <= note._genTime + _judgementSecond + _startDelay)
         {
             // TODO : Touch, Swipe 판정 노트와 비교해서 맞추기.
             if (TouchManager.IsTouch || TouchManager.IsSwipe)
@@ -174,7 +170,7 @@ public class BaseStage : MonoBehaviour
                     Debug.Log("Hit Already!");
                     Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
                     _stage.OnFail(note);
-                    note._isHit = false;
+                    note._isSucceed = false;
                     _hitNote--;
                 }
             }

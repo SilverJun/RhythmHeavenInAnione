@@ -1,16 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using DG.Tweening;
+﻿using DG.Tweening;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class Logo : MonoBehaviour
 {
     private bool _isTouched = false;
     private bool _isSplash = true;
+    private bool _goMainMenu;
     private GameObject _info;
     private GameObject _arrow;
-    private Rigidbody2D _rigid;
+    //private Rigidbody2D _rigid;
+
+    private Vector3 _pivot;
+    private Vector3 _velocity;
 
 	// Use this for initialization
 	void Start ()
@@ -20,7 +21,7 @@ public class Logo : MonoBehaviour
 
         PlayArrowAnimation();
 
-	    _rigid = GetComponent<Rigidbody2D>();
+	    //_rigid = GetComponent<Rigidbody2D>();
 	}
 
     private void PlayArrowAnimation()
@@ -58,7 +59,13 @@ public class Logo : MonoBehaviour
     {
         if (_isSplash && _isTouched)
         {
-            _rigid.AddForce((Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position).normalized * 1000.0f);
+            Vector3 touchPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _velocity = new Vector3(touchPosition.x, touchPosition.y, 0) - (transform.position + _pivot);
+            transform.position += _velocity;
+        }
+        else if (_goMainMenu)
+        {
+            transform.position += _velocity;
         }
     }
     
@@ -72,8 +79,8 @@ public class Logo : MonoBehaviour
         if (!Input.GetMouseButtonDown(0))
             return false;
 
-        Vector2 pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.zero, 0f);
+        _pivot = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        RaycastHit2D hit = Physics2D.Raycast(_pivot, Vector2.zero, 0f);
 
         return hit.collider != null && hit.collider.gameObject == this.gameObject;
     }
@@ -84,17 +91,20 @@ public class Logo : MonoBehaviour
 
         _isTouched = false;
 
-        if (_rigid.velocity.y > 20.0f)
+        if (_velocity.y > 1.0f)
         {
-            _rigid.drag = 0.0f;
+            //_rigid.drag = 0.0f;
+            _goMainMenu = true;
             _arrow.SetActive(false);
             _info.SetActive(false);
         }
         else
         {
-            _rigid.velocity = new Vector2(0.0f, 0.0f);
-            _rigid.position = new Vector2(0.0f, 0.0f);
-            _rigid.drag = 20.0f;
+            //_rigid.velocity = new Vector2(0.0f, 0.0f);
+            //_rigid.position = new Vector2(0.0f, 0.0f);
+            //_rigid.drag = 20.0f;
+            _velocity = Vector3.zero;
+            transform.position = Vector3.zero;
             _arrow.SetActive(true);
         }
 
