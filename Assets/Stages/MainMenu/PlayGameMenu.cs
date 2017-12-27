@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.SceneManagement;
-
-public class PlayGameMenu : Menu
+﻿public class PlayGameMenu : Menu
 {
     protected override void Start()
     {
         base.Start();
-        UIHelper.AddButtonListener(Vars["menu1"], () => AnimHide(ShowStageMenu));
+        UIHelper.AddButtonListener(Vars["menu1"], () => AnimHide(() => ShowStageMenu("SchoolMenu")));
+        UIHelper.AddButtonListener(Vars["menu2"], () => AnimHide(() => ShowStageMenu("DormitoryMenu")));
+        UIHelper.AddButtonListener(Vars["menu3"], () => AnimHide(() => ShowStageMenu("ExteriorMenu")));
         UIHelper.AddButtonListener(Vars["back"], () => AnimHide(ShowBackMenu));
     }
 
-    void ShowStageMenu()
+    void ShowStageMenu(string menu)
     {
-        UIManager.OpenUI<SchoolMenu>("Prefab/SchoolMenu");
+        UIManager.OpenUI<Menu>("Prefab/" + menu);
     }
 
     void ShowBackMenu()

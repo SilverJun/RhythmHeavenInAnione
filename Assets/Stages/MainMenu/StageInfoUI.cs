@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using JSONForm;
 using System.Collections;
 using UnityEngine;
@@ -19,18 +20,16 @@ public class StageInfoUI : UI
     {
         _stageInfo = StageManager.Instance.GetStageInfo(StageManager.Instance._currentStageName);
         //string status = _stageInfo.GetStageStatusString();
-        Vars["stageImage"].GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/UI/" + _stageInfo.StageName);
-        Vars["stageImage"].GetComponent<Image>().preserveAspect = true;
-        Vars["statusText"].GetComponent<Text>().text = _stageInfo.StageStatus;
-        Vars["InfoText"].GetComponent<Text>().text = _stageInfo.StageIntro;
+        Vars["stageImage"].GetComponent<Image>().sprite = Resources.Load<Sprite>("Image/StageInfoUI/" + _stageInfo.StageName);
     }
 
     void ShowAnim()
     {
         Sequence seq = DOTween.Sequence();
         var rectTransform = GetComponent<RectTransform>();
-        seq.SetEase(Ease.OutBounce);
+        seq.SetEase(Ease.OutCirc);
         seq.Append(rectTransform.DOMoveX(0.0f, 1.0f));
+        
         seq.Play();
     }
 
@@ -38,7 +37,7 @@ public class StageInfoUI : UI
     {
         Sequence seq = DOTween.Sequence();
         var rectTransform = GetComponent<RectTransform>();
-        seq.SetEase(Ease.InExpo);
+        seq.SetEase(Ease.InCirc);
         seq.Append(rectTransform.DOMoveX(-700.0f, 1.0f));
         seq.AppendCallback(() =>
         {

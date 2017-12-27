@@ -333,7 +333,7 @@
     <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\Resources\RAS\LibraryStage.txt" />
     <None Include="Assets\Resources\StageInfo.json" />
-    <None Include="Assets\Stages\DormitoryStages\RoomStage\RoomStage.txt" />
+    <None Include="Assets\Stages\DormitoryStages\Room\RoomStage.txt" />
     <None Include="Assets\Stages\ExteriorStages\Gym\GymStage.txt" />
     <None Include="Packages\com.unity.ads@2.0.3\package.json" />
     <None Include="Packages\com.unity.analytics@2.0.13\package.json" />

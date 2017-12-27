@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using RAS;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Random = System.Random;
 
 public class RoomStage : AbstractStage
 {
     [SerializeField] private GameObject _trash;
     [SerializeField] private GameObject _player;
+    [SerializeField] private List<Sprite> _trashSprite = new List<Sprite>();
+    [SerializeField] private AudioSource _sfx;
+    [SerializeField] private AudioClip _trashSFX;
+    [SerializeField] private AudioClip _canSFX;
 
     private Animator _playerAnim;
     private Queue<Note> _hitCheckQueue = new Queue<Note>();
@@ -39,12 +45,30 @@ public class RoomStage : AbstractStage
         obj.GetComponent<Animator>().SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
     }
 
+    public void SetCanOne()
+    {
+        var obj = Instantiate(_trash);
+        obj.GetComponent<SpriteRenderer>().sprite = _trashSprite[UnityEngine.Random.Range(0, 2)];
+        StartCoroutine(AutoDestroyNote(obj));
+        obj.GetComponent<Animator>().SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+    }
+
     IEnumerator AutoDestroyNote(GameObject note)
     {
         var animator = note.GetComponent<Animator>();
         yield return new WaitUntil(() => _hitCheckQueue.Count != 0 && (_hitCheckQueue.First()._isSucceed || animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f));
         _hitCheckQueue.Dequeue();
         Destroy(note);
+    }
+
+    public void PlayTrashSFX()
+    {
+        _sfx.PlayOneShot(_trashSFX);
+    }
+
+    public void PlayCanSFX()
+    {
+        _sfx.PlayOneShot(_canSFX);
     }
     ///
 
@@ -54,7 +78,7 @@ public class RoomStage : AbstractStage
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
         switch (note._noteName)
         {
-            case "fn1": 
+            case "fn1":
             case "fn2":
             case "fn3":
             case "fn4":
@@ -98,6 +122,6 @@ public class RoomStage : AbstractStage
 
     public override void OnExit()
     {
-        //SceneManager.LoadScene("MainSplash");
+        SceneManager.LoadScene("MainSplash");
     }
 }

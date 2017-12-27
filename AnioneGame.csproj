@@ -326,11 +326,15 @@
     <Compile Include="Assets\Script\UI\UI.cs" />
     <Compile Include="Assets\Script\UI\UIHelper.cs" />
     <Compile Include="Assets\Script\UI\UIManager.cs" />
-    <Compile Include="Assets\Stages\DormitoryStages\RoomStage\RoomStage.cs" />
+    <Compile Include="Assets\Stages\DormitoryStages\PERoom\PERoomStage.cs" />
+    <Compile Include="Assets\Stages\DormitoryStages\Room\RoomStage.cs" />
+    <Compile Include="Assets\Stages\DormitoryStages\Store\StoreStage.cs" />
     <Compile Include="Assets\Stages\EndStage\EndStageUI.cs" />
     <Compile Include="Assets\Stages\ExteriorStages\Gym\GymStage.cs" />
     <Compile Include="Assets\Stages\ExteriorStages\Playground\PlaygroundStage.cs" />
     <Compile Include="Assets\Stages\ExteriorStages\Stand\StandStage.cs" />
+    <Compile Include="Assets\Stages\MainMenu\DormitoryMenu.cs" />
+    <Compile Include="Assets\Stages\MainMenu\ExteriorMenu.cs" />
     <Compile Include="Assets\Stages\MainMenu\Info.cs" />
     <Compile Include="Assets\Stages\MainMenu\Logo.cs" />
     <Compile Include="Assets\Stages\MainMenu\MainMenu.cs" />
@@ -359,7 +363,7 @@
     <None Include="Assets\JsonDotNet\link.xml" />
     <None Include="Assets\Resources\RAS\LibraryStage.txt" />
     <None Include="Assets\Resources\StageInfo.json" />
-    <None Include="Assets\Stages\DormitoryStages\RoomStage\RoomStage.txt" />
+    <None Include="Assets\Stages\DormitoryStages\Room\RoomStage.txt" />
     <None Include="Assets\Stages\ExteriorStages\Gym\GymStage.txt" />
     <None Include="Packages\com.unity.ads@2.0.3\package.json" />
     <None Include="Packages\com.unity.analytics@2.0.13\package.json" />

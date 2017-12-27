@@ -11,7 +11,7 @@ public class Logo : MonoBehaviour
     //private Rigidbody2D _rigid;
 
     private Vector3 _pivot;
-    private Vector3 _velocity;
+    public Vector3 _velocity;
 
 	// Use this for initialization
 	void Start ()
@@ -91,7 +91,7 @@ public class Logo : MonoBehaviour
 
         _isTouched = false;
 
-        if (_velocity.y > 1.0f)
+        if (_velocity.y > 0.7f)
         {
             //_rigid.drag = 0.0f;
             _goMainMenu = true;
