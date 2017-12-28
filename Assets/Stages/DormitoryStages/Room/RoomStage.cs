@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using RAS;
+using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Random = System.Random;
 
 public class RoomStage : AbstractStage
 {
@@ -16,7 +16,7 @@ public class RoomStage : AbstractStage
     [SerializeField] private AudioClip _canSFX;
 
     private Animator _playerAnim;
-    private Queue<Note> _hitCheckQueue = new Queue<Note>();
+    private List<GameObject> _trashNoteQueue = new List<GameObject>();
 
     void Start ()
     {
@@ -30,6 +30,13 @@ public class RoomStage : AbstractStage
         {
             SetPlayerAction();
         }
+        
+    }
+
+    void OnGUI()
+    {
+        Rect rt = new Rect(0.0f, 0.0f, 300.0f, 300.0f);
+        GUI.Label(rt, "trashNoteQueue : " + _trashNoteQueue.Count);
     }
 
     /// Room Stage Functions
@@ -38,29 +45,21 @@ public class RoomStage : AbstractStage
         _playerAnim.SetTrigger("Action");
     }
     
-    public void SetTrashOne()
+    public void SetTrashOne(Note note)
     {
         var obj = Instantiate(_trash);
-        StartCoroutine(AutoDestroyNote(obj));
-        obj.GetComponent<Animator>().SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _trashNoteQueue.Add(obj);
+        obj.GetComponent<Animator>().SetFloat("AnimSpeed", _baseStage.GetAnimSpeed() * (1 / note._beat));
     }
 
-    public void SetCanOne()
+    public void SetCanOne(Note note)
     {
         var obj = Instantiate(_trash);
-        obj.GetComponent<SpriteRenderer>().sprite = _trashSprite[UnityEngine.Random.Range(0, 2)];
-        StartCoroutine(AutoDestroyNote(obj));
+        _trashNoteQueue.Add(obj);
+        obj.GetComponent<SpriteRenderer>().sprite = _trashSprite[Random.Range(0, 2)];
         obj.GetComponent<Animator>().SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
     }
-
-    IEnumerator AutoDestroyNote(GameObject note)
-    {
-        var animator = note.GetComponent<Animator>();
-        yield return new WaitUntil(() => _hitCheckQueue.Count != 0 && (_hitCheckQueue.First()._isSucceed || animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f));
-        _hitCheckQueue.Dequeue();
-        Destroy(note);
-    }
-
+    
     public void PlayTrashSFX()
     {
         _sfx.PlayOneShot(_trashSFX);
@@ -78,41 +77,52 @@ public class RoomStage : AbstractStage
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
         switch (note._noteName)
         {
+            case "on1":
             case "fn1":
             case "fn2":
             case "fn3":
             case "fn4":
-            case "ThreeOneNotice":
-                SetTrashOne();
+            case "fon1":
+            case "lon1":
+                SetTrashOne(note);
                 break;
 
-            case "fc1":
-            case "fc2":
-            case "fc3":
-            case "fc4":
-                _hitCheckQueue.Enqueue(note);
-                break;
-
-            case "ThreeOneCheck":
-            case "ThreeTwoCheck":
-                SetTrashOne();
-                _hitCheckQueue.Enqueue(note);
-                break;
-
-            case "ThreeThreeCheck":
-                _hitCheckQueue.Enqueue(note);
+            case "tn1":
+            case "tc1":
+            case "tc2":
+                SetCanOne(note);
                 break;
         }
     }
 
     public override void OnSuccess(Note note)
     {
+        switch (note._noteName)
+        {
+            case "oc1":
+            case "fc1":
+            case "fc2":
+            case "fc3":
+            case "fc4":
+                PlayTrashSFX();
+                break;
+            case "tc1":
+            case "tc2":
+            case "tc3":
+                PlayCanSFX();
+                break;
+        }
         
+        Destroy(_trashNoteQueue[0]);
+        _trashNoteQueue.RemoveAt(0);
     }
 
     public override void OnFail(Note note)
     {
-
+        if (_trashNoteQueue.Count != 0)
+        {
+            _trashNoteQueue.RemoveAt(0);
+        }
     }
 
     public override void OnEnd(EndStageUI ui)

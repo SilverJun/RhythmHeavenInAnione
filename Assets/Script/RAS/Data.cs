@@ -53,12 +53,14 @@ namespace RAS
         public bool _isSucceed;
         public float _genTime;
         public string _noteName;
+        public float _beat;
 
-        public Note(float genTime, string type, string noteName)
+        public Note(float genTime, string type, string noteName, float beat)
         {
             _isHit = false;
             _isSucceed = false;
             _genTime = genTime;
+            _beat = beat;
             _type = NoteType.None;
             _noteName = noteName;
             switch (type)

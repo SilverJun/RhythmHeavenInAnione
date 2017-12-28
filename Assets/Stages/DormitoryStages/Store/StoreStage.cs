@@ -12,8 +12,6 @@ public class StoreStage : AbstractStage
     [SerializeField] private List<Sprite> _breadList = new List<Sprite>();
     private GameObject _bread;
 
-    // position y = 2.5f, y = 2.7f
-
     // Use this for initialization
     void Start () {
 		

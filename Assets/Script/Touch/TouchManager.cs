@@ -9,7 +9,7 @@ public class TouchManager : MonoBehaviour
     public static bool IsTouch { get; set; }
     public static bool IsSwipe { get; set; }
     public static Vector2 TouchedPos { get; set; }
-    public static float SwipeLength = 5.0f;
+    public static float SwipeLength = 0.5f;
 
     //public enum SwipeDir
     //{

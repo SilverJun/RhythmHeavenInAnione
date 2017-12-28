@@ -17,6 +17,12 @@ public class EndStageUI : UI
     private GameObject Persent;
     private GameObject Button;
 
+    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClip _perfectAudioClip;
+    [SerializeField] private AudioClip _goodAudioClip;
+    [SerializeField] private AudioClip _clearAudioClip;
+    [SerializeField] private AudioClip _failAudioClip;
+
     private string[,] _commentStrings =
     {
         {
@@ -61,7 +67,11 @@ public class EndStageUI : UI
         Comment.SetActive(true);
 
         int n = UnityEngine.Random.Range(0, 2);
-        if (per >= 80.0f)
+        if (per >= 98.0f)
+        {
+            
+        }
+        else if (per >= 80.0f)
         {
             CommentString = _commentStrings[0,n];
         }

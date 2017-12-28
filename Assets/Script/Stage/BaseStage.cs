@@ -120,7 +120,7 @@ public class BaseStage : MonoBehaviour
     {
         var pattern = _parser._patterns.Find((x) => x._name == action._patternName);
         var genTime = BeatToRealSecond(action._beat);
-        _judgementSecond = BeatToRealSecond(0.3f);
+        _judgementSecond = BeatToRealSecond(0.25f);
 
         var noteList = new List<Note>();
 
@@ -128,7 +128,7 @@ public class BaseStage : MonoBehaviour
 
         foreach (var note in pattern._noteSetting)
         {
-            _stageNostes.Add(new Note(genTime + offsetTime, note._type, note._name));
+            _stageNostes.Add(new Note(genTime + offsetTime, note._type, note._name, note._beat));
             noteList.Add(_stageNostes[_stageNostes.Count-1]);
             offsetTime += BeatToRealSecond(note._beat);
 
@@ -153,13 +153,11 @@ public class BaseStage : MonoBehaviour
 
         while (_stageBgm.time <= note._genTime + _judgementSecond + _startDelay)
         {
-            // TODO : Touch, Swipe 판정 노트와 비교해서 맞추기.
-            if (TouchManager.IsTouch || TouchManager.IsSwipe)
+            if (note._type == NoteType.Touch && TouchManager.IsTouch)
             {
                 if (note._isHit == false)
                 {
-                    Debug.Log("Hit Success!");
-                    Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
+                    Debug.LogFormat("Hit Success! - {0}, {1}", note._genTime, _stageBgm.time);
                     _stage.OnSuccess(note);
                     note._isSucceed = true;
                     note._isHit = true;
@@ -167,8 +165,26 @@ public class BaseStage : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Hit Already!");
-                    Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
+                    Debug.LogFormat("Hit Already! - {0}, {1}", note._genTime, _stageBgm.time);
+                    _stage.OnFail(note);
+                    note._isSucceed = false;
+                    _hitNote--;
+                }
+            }
+
+            if (note._type == NoteType.Swipe && TouchManager.IsSwipe)
+            {
+                if (note._isHit == false)
+                {
+                    Debug.LogFormat("Hit Success! - {0}, {1}", note._genTime, _stageBgm.time);
+                    _stage.OnSuccess(note);
+                    note._isSucceed = true;
+                    note._isHit = true;
+                    _hitNote++;
+                }
+                else
+                {
+                    Debug.LogFormat("Hit Already! - {0}, {1}", note._genTime, _stageBgm.time);
                     _stage.OnFail(note);
                     note._isSucceed = false;
                     _hitNote--;
@@ -179,8 +195,7 @@ public class BaseStage : MonoBehaviour
 
         if (!note._isHit)
         {
-            Debug.Log("Hit Fail!");
-            Debug.LogFormat("{0}, {1}", note._genTime, _stageBgm.time);
+            Debug.LogFormat("Not Hit! - {0}, {1}", note._genTime, _stageBgm.time);
             _stage.OnFail(note);
         }
     }
