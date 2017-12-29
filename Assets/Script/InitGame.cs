@@ -9,6 +9,7 @@ public class InitGame : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
+	    Application.targetFrameRate = 60;
         // 사용자 스테이지 클리어 등 정보 읽기.
 	    var stageInfoJsonPath = Path.Combine(Application.persistentDataPath, "StageInfo.json");
 
