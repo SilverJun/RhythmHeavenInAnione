@@ -1,8 +1,5 @@
-﻿using System.Collections;
+﻿using RAS;
 using System.Collections.Generic;
-using System.Linq;
-using RAS;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -31,12 +28,6 @@ public class RoomStage : AbstractStage
             SetPlayerAction();
         }
         
-    }
-
-    void OnGUI()
-    {
-        Rect rt = new Rect(0.0f, 0.0f, 300.0f, 300.0f);
-        GUI.Label(rt, "trashNoteQueue : " + _trashNoteQueue.Count);
     }
 
     /// Room Stage Functions

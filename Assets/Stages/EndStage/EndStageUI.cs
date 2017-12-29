@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -69,19 +68,23 @@ public class EndStageUI : UI
         int n = UnityEngine.Random.Range(0, 2);
         if (per >= 98.0f)
         {
-            
+            CommentString = "PERFECT!!";
+            _audioSource.PlayOneShot(_perfectAudioClip);
         }
         else if (per >= 80.0f)
         {
             CommentString = _commentStrings[0,n];
+            _audioSource.PlayOneShot(_goodAudioClip);
         }
         else if (per >= 60.0f)
         {
             CommentString = _commentStrings[1, n];
+            _audioSource.PlayOneShot(_clearAudioClip);
         }
         else
         {
             CommentString = _commentStrings[2, n];
+            _audioSource.PlayOneShot(_failAudioClip);
         }
 
         Comment.GetComponent<Text>().text = CommentString;

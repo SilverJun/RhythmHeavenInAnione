@@ -91,7 +91,7 @@ public class Logo : MonoBehaviour
 
         _isTouched = false;
 
-        if (_velocity.y > 0.7f)
+        if (_velocity.y > 0.5f)
         {
             //_rigid.drag = 0.0f;
             _goMainMenu = true;
