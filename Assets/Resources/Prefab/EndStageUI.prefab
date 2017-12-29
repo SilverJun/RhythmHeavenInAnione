@@ -449,10 +449,11 @@ MonoBehaviour:
   MaxScore: 0
   HitScore: 0
   CommentString: 
-  _audioSource: {fileID: 0}
-  _perfectAudioClips: []
-  _clearAudioClips: []
-  _failAudioClips: []
+  _audioSource: {fileID: 82648796459889868}
+  _perfectAudioClip: {fileID: 8300000, guid: 47005b7861ec06e47bfac37d7fb2b45c, type: 3}
+  _goodAudioClip: {fileID: 8300000, guid: 7500c481b9d5c6941bce92c6e970df59, type: 3}
+  _clearAudioClip: {fileID: 8300000, guid: eaa0fa578bff47140974024996c8294d, type: 3}
+  _failAudioClip: {fileID: 8300000, guid: 518b3b7aed3d4454db609b7f96a609f8, type: 3}
 --- !u!114 &114671255397678520
 MonoBehaviour:
   m_ObjectHideFlags: 1
