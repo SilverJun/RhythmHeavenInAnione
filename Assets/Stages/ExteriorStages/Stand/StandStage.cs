@@ -18,19 +18,27 @@ public class StandStage : AbstractStage
     [SerializeField] private GameObject _clear;
     [SerializeField] private GameObject _fail;
 
+    public AudioSource _audioSource;
+    public AudioClip _beep;
+    public AudioClip _one;
+    public AudioClip _two;
+    public AudioClip _three;
+
     void Start ()
     {
         _taehoonAnim = _taehoon.GetComponent<Animator>();
         _gameAnim = _game.GetComponent<Animator>();
         _aniAnim = _ani.GetComponent<Animator>();
         _playerAnim = _player.GetComponent<Animator>();
+
+        SetAnimSpeed();
     }
 	
 	void FixedUpdate ()
     {
         if (TouchManager.IsTouch)
         {
-            
+            SetPlayerAction();
         }
 	}
 
@@ -39,29 +47,20 @@ public class StandStage : AbstractStage
     {
         _playerAnim.SetTrigger("Action");
     }
-    void SetTaehoonAction()
+
+    void SetNPCAction()
     {
         _taehoonAnim.SetTrigger("Action");
-    }
-    void SetGameAction()
-    {
         _gameAnim.SetTrigger("Action");
-    }
-    void SetAniAction()
-    {
         _aniAnim.SetTrigger("Action");
     }
 
     void SetAnimSpeed()
     {
-        //_taehoonAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
-        //_gameAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
-        //_aniAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
-        //_playerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
-        _taehoonAnim.SetFloat("AnimSpeed", 1.0f);
-        _gameAnim.SetFloat("AnimSpeed", 1.0f);
-        _aniAnim.SetFloat("AnimSpeed", 1.0f);
-        _playerAnim.SetFloat("AnimSpeed", 1.0f);
+        _taehoonAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _gameAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _aniAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _playerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
     }
 
     void SetClear()
@@ -78,7 +77,7 @@ public class StandStage : AbstractStage
 
     IEnumerator AutoDisactive(GameObject obj)
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(_baseStage._fourBeatSecond / 2.0f);
         obj.SetActive(false);
     }
     /// 
@@ -88,7 +87,12 @@ public class StandStage : AbstractStage
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
         switch (note._noteName)
         {
-
+            case "PatternNotice":
+                _audioSource.PlayOneShot(_beep);
+                break;
+            case "check":
+                SetNPCAction();
+                break;
         }
     }
 

@@ -12,12 +12,21 @@ public class ClassStage : AbstractStage
     private GameObject _player;
     private Animator _playerAnim;
 
-    public List<GameObject> _decoSpriteList = new List<GameObject>();
-    public List<GameObject> _graffitiSpriteList = new List<GameObject>();
+    private GameObject _deco;
 
+    public List<GameObject> _decoSpriteList = new List<GameObject>();
+    //public GameObject _fstGraffiti;
+    //public GameObject _secGraffiti;
+    //public GameObject _trdGraffiti;
+
+    public AudioSource _audioSource;
+    public AudioClip _pop;
+    public AudioClip _erase;
+    
     void Start()
     {
         _graffitiAnim = _graffiti.GetComponent<Animator>();
+        _graffitiAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
         _playerAnim = _player.GetComponent<Animator>();
     }
 
@@ -34,6 +43,25 @@ public class ClassStage : AbstractStage
     public void SetPlayerAction()
     {
         _playerAnim.SetTrigger("Action");
+        _audioSource.PlayOneShot(_erase);
+    }
+
+    // normal
+    void SetPattern1()
+    {
+        _graffitiAnim.SetTrigger("Pattern1");
+    }
+
+    // fast
+    void SetPattern2()
+    {
+        _graffitiAnim.SetTrigger("Pattern2");
+    }
+
+    void SetDeco()
+    {
+        _deco = _decoSpriteList[Random.Range(0, _decoSpriteList.Count - 1)];
+        _deco.SetActive(true);
     }
     ///
 
@@ -47,12 +75,64 @@ public class ClassStage : AbstractStage
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
         switch (note._noteName)
         {
-
+            //SetPattern(Three, tn1, tn2, tn3, tn4, tc1, tc2, tc3, tc4)
+            //SetPattern(Fast, fn1, fn2, fn3, fn4, fn5, fc1, fc2, fc3, fc4, fc5)
+            case "tn1":
+                SetPattern1();
+                _audioSource.PlayOneShot(_pop);
+                break;
+            case "tn2":
+                _audioSource.PlayOneShot(_pop);
+                break;
+            case "tn3":
+                _audioSource.PlayOneShot(_pop);
+                break;
+            case "tn4":
+                SetDeco();
+                break;
+            case "tc4":
+                _deco.SetActive(false);
+                _graffitiAnim.SetTrigger("Idle");
+                break;
+            case "fn1":
+                SetPattern2();
+                SetDeco();
+                break;
+            case "fn2":
+                _audioSource.PlayOneShot(_pop);
+                break;
+            case "fn3":
+                _audioSource.PlayOneShot(_pop);
+                break;
+            case "fn4":
+                _audioSource.PlayOneShot(_pop);
+                break;
+            case "fn5":
+                break;
+            case "fc5":
+                _deco.SetActive(false);
+                _graffitiAnim.SetTrigger("Idle");
+                break;
         }
     }
 
     public override void OnSuccess(Note note)
     {
+        //switch (note._noteName)
+        //{
+        //    case "tc1":
+        //    case "fc2":
+        //        _fstGraffiti.SetActive(false);
+        //        break;
+        //    case "tc2":
+        //    case "fc3":
+        //        _secGraffiti.SetActive(false);
+        //        break;
+        //    case "tc3":
+        //    case "fc4":
+        //        _trdGraffiti.SetActive(false);
+        //        break;
+        //}
     }
 
     public override void OnFail(Note note)

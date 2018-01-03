@@ -12,173 +12,140 @@
 //
 
 Init {
-    SetStartDelay(0.35)
-    SetBpm(189.0)
+    SetStartDelay(0.0)
+    SetBpm(110.0)
     SetStage(Library)
     
     NoteSetting(OneNotice, 4, Notice)
     NoteSetting(OneCheck, 8, Touch)
-    NoteSetting(TwoNotice, 4, Notice)
-    NoteSetting(TwoOneCheck, 8, Touch)
-    NoteSetting(TwoTwoCheck, 8, Touch)
-    NoteSetting(ThreeOneNotice, 4, Notice)
-    NoteSetting(ThreeOneCheck, 4, Touch)
-    NoteSetting(ThreeTwoCheck, 4, Touch)
-    NoteSetting(ThreeThreeCheck, 4, Touch)
+
+    NoteSetting(t1N, 8, Notice)
+    NoteSetting(t2N, 8, Notice)
+    NoteSetting(tN, 4, Notice)
+    NoteSetting(t1C, 8, Touch)
+    NoteSetting(t2C, 8, Touch)
     
     SetPattern(One, OneNotice, OneCheck)
-    SetPattern(Two, TwoNotice, TwoOneCheck, TwoTwoCheck)
-    SetPattern(Three, ThreeOneNotice, ThreeOneCheck, ThreeTwoNotice, ThreeTwoCheck, ThreeThreeNotice, ThreeThreeCheck)
+    SetPattern(Two, t1N, t2N, tN, t1C, t2C)
 } 
 
 Sheet {
-    Beat(17)
-    Action(One)
-   
-    Beat(19)
-    Action(One)
-   
-    Beat(21)
-    Action(One)
-   
-    Beat(23)
-    Action(One)
-   
-    Beat(25)
-    Action(One)
-   
-    Beat(27)
-    Action(One)
-   
-    Beat(29)
-    Action(Three)
-   
-    Beat(33)
-    Action(One)
-   
-    Beat(35)
-    Action(One)
-   
-    Beat(37)
-    Action(One)
-   
-    Beat(39)
-    Action(One)
-   
-    Beat(41)
-    Action(One)
-   
-    Beat(43)
-    Action(One)
-   
-    Beat(45)
-    Action(Two)
-   
-    Beat(47)
-    Action(One)
-   
-    Beat(49)
-    Action(One)
-   
-    Beat(51)
-    Action(One)
-   
-    Beat(53)
-    Action(One)
-   
-    Beat(55)
-    Action(One)
-   
-    Beat(57)
-    Action(Three)
-   
-    Beat(61)
-    Action(Two)
-   
-    Beat(63)
-    Action(One)
-   
-    Beat(65)
-    Action(One)
-   
-    Beat(67)
-    Action(One)
-   
+    Beat(4)
+	Action(One)
+	
+    Beat(6)
+	Action(One)
+	
+    Beat(12)
+	Action(One)
+	
+    Beat(14)
+	Action(One)
+	
+    Beat(20)
+	Action(One)
+	
+    Beat(22)
+	Action(One)
+
+    Beat(28)
+	Action(Two)
+
+    Beat(36)
+	Action(One)
+	
+    Beat(38)
+	Action(One)
+	
+    Beat(44)
+	Action(One)
+	
+    Beat(46)
+	Action(One)
+	
+    Beat(52)
+	Action(One)
+	
+    Beat(54)
+	Action(One)
+
+    Beat(60)
+	Action(Two)
+	
+    Beat(64)
+	Action(Two)
+	
     Beat(69)
-    Action(One)
-   
-    Beat(71)
-    Action(One)
-   
-    Beat(73)
-    Action(One)
-   
-    Beat(75)
-    Action(One)
-   
-    Beat(77)
-    Action(Two)
-   
-    Beat(79)
-    Action(One)
-   
-    Beat(81)
-    Action(Two)
-   
-    Beat(83)
-    Action(One)
-   
-    Beat(85)
-    Action(Two)
-   
-    Beat(87)
-    Action(One)
-   
-    Beat(89)
-    Action(Two)
-   
-    Beat(91)
-    Action(One)
-   
-    Beat(93)
-    Action(Three)
-   
-    Beat(97)
-    Action(One)
-   
-    Beat(99)
-    Action(One)
-   
-    Beat(101)
-    Action(Three)
-   
-    Beat(105)
-    Action(One)
-   
+	Action(Two)
+	
+    Beat(72)
+	Action(One)
+	
+    Beat(74)
+	Action(One)
+
+    Beat(76)
+	Action(Two)
+	
+    Beat(84)
+	Action(One)
+	
+    Beat(86)
+	Action(One)
+	
+    Beat(92)
+	Action(One)
+	
+    Beat(94)
+	Action(One)
+	
+    Beat(100)
+	Action(One)
+	
+    Beat(102)
+	Action(One)
+	
+    Beat(104)
+	Action(Two)
+
     Beat(107)
-    Action(One)
-   
-    Beat(109)
-    Action(Three)
-   
-    Beat(113)
-    Action(One)
-   
-    Beat(115)
-    Action(One)
-   
-    Beat(117)
-    Action(Two)
-   
-    Beat(119)
-    Action(One)
-   
-    Beat(121)
-    Action(Two)
-   
-    Beat(123)
-    Action(One)
-   
-    Beat(125)
-    Action(Two)
+	Action(Two)
+
+    Beat(112)
+	Action(One)
+	
+    Beat(114)
+	Action(One)
+	
+    Beat(116)
+	Action(One)
+	
+    Beat(118)
+	Action(One)
+	
+    Beat(124)
+	Action(One)
+
+    Beat(128)
+	Action(One)
+	
+    Beat(132)
+	Action(One)
+
+    Beat(136)
+	Action(One)
+
+    Beat(140)
+	Action(Two)
+
+    Beat(144)
+	Action(Two)
+	
+    Beat(148)
+	Action(One)
+	
+    Beat(150)
+	Action(One)
+
+	// beat 152
 }

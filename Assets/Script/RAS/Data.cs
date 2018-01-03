@@ -74,6 +74,9 @@ namespace RAS
                 case "Swipe":
                     _type = NoteType.Swipe;
                     break;
+                case "None":
+                    _type = NoteType.None;
+                    break;
                 default:
                     Debug.LogErrorFormat("Undefined Note Type!! {0}", type);
                     break;

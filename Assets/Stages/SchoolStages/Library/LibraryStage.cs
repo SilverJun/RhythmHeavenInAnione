@@ -16,20 +16,15 @@ public class LibraryStage : AbstractStage
     private Animator _monitorAnimator;
 
     public AudioSource _AudioSource = new AudioSource();
-    public AudioClip _One;
-    public AudioClip _Two;
-    public AudioClip _TwoNote;
-    public AudioClip _tOne;
-    public AudioClip _tTwo;
-    public AudioClip _tThree;
-    public AudioClip _tFour;
-    //public AudioClip _Success;
+    public AudioClip _beep;
+    public AudioClip _patternNotice;
     
     void Start()
     {
         _playerAnimator = _player.GetComponent<Animator>();
         _bookAnimator = _book.GetComponent<Animator>();
         _monitorAnimator = _monitor.GetComponent<Animator>();
+        _bookAnimator.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
     }
 
     void FixedUpdate()
@@ -68,49 +63,34 @@ public class LibraryStage : AbstractStage
     ///
 
     /// Interface Implement.
-    //public override void OnAction(float nBeat, Pattern pattern)
-    //{
-    //}
 
     public override void OnNote(Note note)
     {
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
+
+        // SetPattern(One, OneNotice, OneCheck)
+        // SetPattern(Two, t1N, t2N, tN, t1C, t2C)
         switch (note._noteName)
         {
             case "OneNotice":
-                _AudioSource.PlayOneShot(_One);
+                _AudioSource.PlayOneShot(_patternNotice);
                 SetBookOne();
                 break;
-            case "TwoNotice":
-                _AudioSource.PlayOneShot(_Two);
+            case "t1N":
+                _AudioSource.PlayOneShot(_patternNotice);
+                break;
+            case "t2N":
+                _AudioSource.PlayOneShot(_patternNotice);
+                break;
+            case "tN":
                 SetBookTwo();
-                break;
-            case "ThreeOneNotice":
-                _AudioSource.PlayOneShot(_tOne);
-                SetBookThree();
-                break;
-            case "ThreeOneCheck":
-                _AudioSource.PlayOneShot(_tTwo);
-                SetBookThree();
-                break;
-            case "ThreeTwoCheck":
-                _AudioSource.PlayOneShot(_tThree);
-                SetBookThree();
-                break;
-            case "ThreeThreeCheck":
-                _AudioSource.PlayOneShot(_tFour);
-                break;
-            case "TwoCheck":
-                _AudioSource.PlayOneShot(_TwoNote);
-                break;
-            case "OneCheck":
-                _AudioSource.PlayOneShot(_One);
                 break;
         }
     }
 
     public override void OnSuccess(Note note)
     {
+        _AudioSource.PlayOneShot(_beep);
         SetMonitorO();
     }
 

@@ -7,7 +7,6 @@ using UnityEngine;
 public class TouchManager : MonoBehaviour
 {
     public static bool IsTouch { get; set; }
-    public static bool IsSwipe { get; set; }
     public static Vector2 TouchedPos { get; set; }
     public static float SwipeLength = 0.5f;
 
@@ -21,6 +20,10 @@ public class TouchManager : MonoBehaviour
     //}
 
     //public static SwipeDir SwipeDirection = SwipeDir.None;
+    void Start()
+    {
+        IsTouch = false;
+    }
 
     void Update()
     {
@@ -38,35 +41,35 @@ public class TouchManager : MonoBehaviour
                     IsTouch = true;
                     StartCoroutine(TouchEvent());
                 }
-                else if (tempTouchs.phase == TouchPhase.Ended)
-                {
-                    Vector2 touchLength = TouchedPos - tempTouchs.position;
-                    if (touchLength.magnitude >= SwipeLength)
-                    {
-                        IsSwipe = true;
+                //else if (tempTouchs.phase == TouchPhase.Ended)
+                //{
+                //    Vector2 touchLength = TouchedPos - tempTouchs.position;
+                //    if (touchLength.magnitude >= SwipeLength)
+                //    {
+                //        IsSwipe = true;
 
-                        //float swipeAngle = Mathf.Atan2(touchLength.y, touchLength.x) * Mathf.Rad2Deg;
+                //        //float swipeAngle = Mathf.Atan2(touchLength.y, touchLength.x) * Mathf.Rad2Deg;
 
-                        //if (-45.0f >= swipeAngle  && swipeAngle >= -135.0f)
-                        //{
-                        //    SwipeDirection = SwipeDir.Up;
-                        //}
-                        //else if (45.0f <= swipeAngle && swipeAngle <= 135.0f)
-                        //{
-                        //    SwipeDirection = SwipeDir.Down;
-                        //}
-                        //else if (-45.0f < swipeAngle && swipeAngle < 45.0f)
-                        //{
-                        //    SwipeDirection = SwipeDir.Left;
-                        //}
-                        //else if (-45.0f > swipeAngle && swipeAngle > 135.0f)
-                        //{
-                        //    SwipeDirection = SwipeDir.Right;
-                        //}
+                //        //if (-45.0f >= swipeAngle  && swipeAngle >= -135.0f)
+                //        //{
+                //        //    SwipeDirection = SwipeDir.Up;
+                //        //}
+                //        //else if (45.0f <= swipeAngle && swipeAngle <= 135.0f)
+                //        //{
+                //        //    SwipeDirection = SwipeDir.Down;
+                //        //}
+                //        //else if (-45.0f < swipeAngle && swipeAngle < 45.0f)
+                //        //{
+                //        //    SwipeDirection = SwipeDir.Left;
+                //        //}
+                //        //else if (-45.0f > swipeAngle && swipeAngle > 135.0f)
+                //        //{
+                //        //    SwipeDirection = SwipeDir.Right;
+                //        //}
 
-                        StartCoroutine(SwipeEvent());
-                    }
-                }
+                //        StartCoroutine(SwipeEvent());
+                //    }
+                //}
             }
         }
         // For Debugging
@@ -83,9 +86,9 @@ public class TouchManager : MonoBehaviour
         IsTouch = false;
     }
 
-    IEnumerator SwipeEvent()
-    {
-        yield return new WaitForFixedUpdate();
-        IsSwipe = false;
-    }
+    //IEnumerator SwipeEvent()
+    //{
+    //    yield return new WaitForFixedUpdate();
+    //    IsSwipe = false;
+    //}
 }

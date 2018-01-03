@@ -85,8 +85,16 @@ namespace RAS
         private void ParseSetPattern(string[] token)
         {
             List<string> tokenList = new List<string>(token);
-            NoteSetting[] noteList = _noteSettings.Where(x => tokenList.Contains(x.Key)).Select(x => x.Value).ToArray();
-            _patterns.Add(new Pattern(token[1], noteList));
+            List<NoteSetting> noteList = new List<NoteSetting>();
+            tokenList.ForEach(x =>
+            {
+                if (_noteSettings.ContainsKey(x))
+                {
+                    noteList.Add(_noteSettings[x]);
+                }
+            });
+            //NoteSetting[] noteList = _noteSettings.Where(x => tokenList.Contains(x.Key)).Select(x => x.Value).ToArray();
+            _patterns.Add(new Pattern(token[1], noteList.ToArray()));
         }
 
         private void ParseAction(string[] token)

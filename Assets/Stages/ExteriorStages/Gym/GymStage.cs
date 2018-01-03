@@ -11,14 +11,21 @@ public class GymStage : AbstractStage
     private GameObject _player;
     private Animator _playerAnim;
 
+    public AudioSource _audioSource;
+    public AudioClip _whistle;
+    public AudioClip _clear;
+    public AudioClip _fail;
+    public AudioClip _swing;
+
     void Start ()
     {
         _speakerAnim = _speaker.GetComponent<Animator>();
         _playerAnim = _player.GetComponent<Animator>();
-
+        _speakerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
     }
 
-    void FixedUpdate () {
+    void FixedUpdate ()
+    {
         if (TouchManager.IsTouch)
         {
             SetPlayerAction();
@@ -29,17 +36,13 @@ public class GymStage : AbstractStage
     /// Gym Stage Functions
     public void SetPlayerAction()
     {
+        _audioSource.PlayOneShot(_swing);
         _playerAnim.SetTrigger("Action");
     }
 
-    public void StartSpeakerSay()
+    public void SetSpeakerSay()
     {
-        _speakerAnim.SetBool("Say", true);
-    }
-
-    public void EndSpeakerSay()
-    {
-        _speakerAnim.SetBool("Say", false);
+        _speakerAnim.SetTrigger("Speak");
     }
 
     public void SetSpeakerSuccess()
@@ -49,7 +52,7 @@ public class GymStage : AbstractStage
 
     public void SetSpeakerFail()
     {
-        _speakerAnim.SetTrigger("Success");
+        _speakerAnim.SetTrigger("Fail");
     }
 
     ///
@@ -64,16 +67,28 @@ public class GymStage : AbstractStage
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
         switch (note._noteName)
         {
-            
+            // SetPattern(One, on1, oc1)
+            // SetPattern(Three, tn1, tn2, tn3, tc1, tc2, tc3)
+            case "on1":
+            case "tn1":
+            case "tn2":
+            case "tn3":
+                SetSpeakerSay();
+                _audioSource.PlayOneShot(_whistle);
+                break;
         }
     }
 
     public override void OnSuccess(Note note)
     {
+        _audioSource.PlayOneShot(_clear);
+        SetSpeakerSuccess();
     }
 
     public override void OnFail(Note note)
     {
+        _audioSource.PlayOneShot(_fail);
+        SetSpeakerFail();
     }
 
     public override void OnEnd(EndStageUI ui)

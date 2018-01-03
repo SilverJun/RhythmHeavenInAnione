@@ -7,9 +7,14 @@ public class PlaygroundStage : AbstractStage
     [SerializeField] private GameObject _player;
     private Animator _playerAnim;
 
+    public AudioSource _audioSource;
+    public AudioClip _notice;
+    public AudioClip _rope;
+
     void Start()
     {
         _playerAnim = _player.GetComponent<Animator>();
+        _playerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
     }
 
     void FixedUpdate()
@@ -45,12 +50,18 @@ public class PlaygroundStage : AbstractStage
         // name을 switch해서 해당 노트에서 사용할 bgm, 효과, 애니메이션 사용.
         switch (note._noteName)
         {
-            
+            case "n2":
+            case "n4":
+            case "n8":
+                SetPlayerNotice();
+                _audioSource.PlayOneShot(_notice);
+                break;
         }
     }
 
     public override void OnSuccess(Note note)
     {
+        _audioSource.PlayOneShot(_rope);
     }
 
     public override void OnFail(Note note)

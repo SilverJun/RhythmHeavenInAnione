@@ -27,7 +27,6 @@ public class RoomStage : AbstractStage
         {
             SetPlayerAction();
         }
-        
     }
 
     /// Room Stage Functions

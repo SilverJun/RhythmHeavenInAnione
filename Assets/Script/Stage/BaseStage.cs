@@ -51,7 +51,8 @@ public class BaseStage : MonoBehaviour
         _parser = new Parser(this, _scriptText);
         //_parser = new Parser(this, StageManager._stageScript);
         _parser.ParseSource();
-        
+
+        _totalNote = 0;
         _hitNote = 0;
         //_totalNote = _parser._actions.Values.Sum((x) => x._noteSetting.Count((y) => y._type != "Notice"));
 
@@ -142,8 +143,29 @@ public class BaseStage : MonoBehaviour
             {
                 StartCoroutine(CheckHit(noteList[i]));
             }
+            else if (noteList[i]._type == NoteType.Notice)
+            {
+                StartCoroutine(NoticeHit(noteList[i]));
+            }
+
             yield return new WaitWhile(() => _stageBgm.time <= noteList[i]._genTime);
             _stage.OnNote(noteList[i]);
+        }
+    }
+
+    IEnumerator NoticeHit(Note note)
+    {
+        while (_stageBgm.time <= note._genTime + note._beat * _fourBeatSecond - _judgementSecond)
+        {
+            yield return new WaitForFixedUpdate();
+
+            if (TouchManager.IsTouch)
+            {
+                Debug.LogFormat("Don't Hit Notice! - {0}, {1}", note._genTime, _stageBgm.time);
+                _stage.OnFail(note);
+                _hitNote--;
+                yield break;
+            }
         }
     }
 
@@ -171,31 +193,14 @@ public class BaseStage : MonoBehaviour
                     _hitNote--;
                 }
             }
-
-            if (note._type == NoteType.Swipe && TouchManager.IsSwipe)
-            {
-                if (note._isHit == false)
-                {
-                    Debug.LogFormat("Hit Success! - {0}, {1}", note._genTime, _stageBgm.time);
-                    _stage.OnSuccess(note);
-                    note._isSucceed = true;
-                    note._isHit = true;
-                    _hitNote++;
-                }
-                else
-                {
-                    Debug.LogFormat("Hit Already! - {0}, {1}", note._genTime, _stageBgm.time);
-                    _stage.OnFail(note);
-                    note._isSucceed = false;
-                    _hitNote--;
-                }
-            }
             yield return new WaitForFixedUpdate();
         }
 
         if (!note._isHit)
         {
             Debug.LogFormat("Not Hit! - {0}, {1}", note._genTime, _stageBgm.time);
+            note._isSucceed = false;
+            note._isHit = false;
             _stage.OnFail(note);
         }
     }
