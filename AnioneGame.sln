@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnioneGame", "AnioneGame.csproj", "{520D3FB9-F427-578B-F908-8F32926172EF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnioneGame.Editor", "AnioneGame.Editor.csproj", "{5767ABC9-12A6-B0A1-5CC7-AB1B7842F059}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,10 +13,6 @@ Global
 		{520D3FB9-F427-578B-F908-8F32926172EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{520D3FB9-F427-578B-F908-8F32926172EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{520D3FB9-F427-578B-F908-8F32926172EF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5767ABC9-12A6-B0A1-5CC7-AB1B7842F059}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5767ABC9-12A6-B0A1-5CC7-AB1B7842F059}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5767ABC9-12A6-B0A1-5CC7-AB1B7842F059}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5767ABC9-12A6-B0A1-5CC7-AB1B7842F059}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

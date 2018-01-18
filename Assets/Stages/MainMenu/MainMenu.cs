@@ -14,10 +14,22 @@ public class MainMenu : Menu
         _menuDown.Play();
         
         UIHelper.AddButtonListener(Vars["menu1"], () => AnimHide(ShowStageMenu));
+        UIHelper.AddButtonListener(Vars["menu2"], () => AnimHide(ShowCredit));
+        UIHelper.AddButtonListener(Vars["menu3"], () => AnimHide(ShowSetting));
     }
 
     void ShowStageMenu()
     {
         UIManager.OpenUI<PlayGameMenu>("Prefab/PlayGameMenu");
+    }
+    
+    void ShowCredit()
+    {
+        UIManager.OpenUI<CreditMenu>("Prefab/CreditMenu");
+    }
+
+    void ShowSetting()
+    {
+        UIManager.OpenUI<SettingMenu>("Prefab/SettingMenu");
     }
 }

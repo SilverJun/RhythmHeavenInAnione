@@ -25,6 +25,7 @@ public class LibraryStage : AbstractStage
         _bookAnimator = _book.GetComponent<Animator>();
         _monitorAnimator = _monitor.GetComponent<Animator>();
         _bookAnimator.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _AudioSource.volume = StageManager.Instance._fxVolume;
     }
 
     void FixedUpdate()
@@ -101,11 +102,11 @@ public class LibraryStage : AbstractStage
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "SchoolMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "SchoolMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }

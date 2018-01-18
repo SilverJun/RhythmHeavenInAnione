@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Collections;
 using JSONForm;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -35,6 +36,31 @@ public class StageManager : MonoBehaviour
     private JObject _stageInfoJson { get; set; }
     public string _currentStageName { get; set; }
     public AudioClip _stageBgm { get; set; }
+    public BaseStage _baseStage { get; set; }
+    public UI _pauseUI { get; set; }
+
+    public AudioSource _mainBgSource { get; set; }
+    public float _bgVolume {
+        get
+        {
+            return Instance.__bgVolume;
+        }
+        set
+        {
+            Instance.__bgVolume = value;
+
+            if (_mainBgSource == null)
+            {
+                _mainBgSource = GameObject.Find("backgroundSound").GetComponent<AudioSource>();   
+            }
+            if (_mainBgSource != null)
+            {
+                _mainBgSource.volume = Instance.__bgVolume;
+            }
+        }
+    }
+    private float __bgVolume;
+    public float _fxVolume { get; set; }
     //
 
     void Init()
@@ -48,6 +74,9 @@ public class StageManager : MonoBehaviour
         var jsonText = File.ReadAllText(stageInfoJsonPath);
         Debug.Log(jsonText);
         _instance._stageInfoJson = JObject.Parse(jsonText);
+
+        _bgVolume = 0.8f;
+        _fxVolume = 1.0f;
     }
 
     public void SetStage(string stageName)
@@ -71,5 +100,30 @@ public class StageManager : MonoBehaviour
     public StageInfo GetStageInfo(string stageName)
     {
         return JsonConvert.DeserializeObject<StageInfo>(Instance._stageInfoJson[stageName].ToString());
+    }
+
+    public void OpenPauseUI()
+    {
+        if (_baseStage == null)
+        {
+            _baseStage = FindObjectOfType<BaseStage>();
+        }
+
+        Time.timeScale = 0.0f;
+        _baseStage._stageBgm.Pause();
+        _pauseUI = UIManager.OpenUI<PauseUI>(Resources.Load<GameObject>("Prefab/PauseUI"));
+    }
+
+    public void ClosePauseUI()
+    {
+        Time.timeScale = 1.0f;
+        _baseStage._stageBgm.UnPause();
+        UIManager.CloseUI(_pauseUI);
+    }
+
+    public void GoMainMenu()
+    {
+        Time.timeScale = 1.0f;
+        _baseStage.ExitStage();
     }
 }

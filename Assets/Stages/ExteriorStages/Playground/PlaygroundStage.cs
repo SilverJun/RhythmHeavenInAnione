@@ -15,6 +15,7 @@ public class PlaygroundStage : AbstractStage
     {
         _playerAnim = _player.GetComponent<Animator>();
         _playerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _audioSource.volume = StageManager.Instance._fxVolume;
     }
 
     void FixedUpdate()
@@ -70,11 +71,11 @@ public class PlaygroundStage : AbstractStage
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "ExteriorMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "ExteriorMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }

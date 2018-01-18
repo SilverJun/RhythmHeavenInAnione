@@ -104,6 +104,6 @@ public class EndStageUI : UI
 
     public void GoMainMenu()
     {
-        SceneManager.LoadScene("MainSplash");
+        StageManager.Instance._baseStage.ExitStage();
     }
 }

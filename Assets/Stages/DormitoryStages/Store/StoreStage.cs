@@ -40,6 +40,8 @@ public class StoreStage : AbstractStage
 
         _bread1 = null;
         _bread2 = null;
+
+        _audioSource.volume = StageManager.Instance._fxVolume;
     }
     
     /// Store Stage Functions
@@ -210,11 +212,11 @@ public class StoreStage : AbstractStage
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "DormitoryMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "DormitoryMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }

@@ -535,9 +535,13 @@ MonoBehaviour:
   - {fileID: 1085460635054036}
   - {fileID: 1532730583836916}
   - {fileID: 1781069950326498}
+  _fstGraffiti: {fileID: 1378230871995646}
+  _secGraffiti: {fileID: 1089624749890390}
+  _trdGraffiti: {fileID: 1653711395085012}
   _audioSource: {fileID: 82801495645361852}
   _pop: {fileID: 8300000, guid: cdee17ba0b82d7e4e93dc622ac0c9a72, type: 3}
   _erase: {fileID: 8300000, guid: 2f3a4d54b36da314a82c488cbeae0b93, type: 3}
+  _fail: {fileID: 8300000, guid: 6ce7aa19734ac8840ae29028e3eb0c1b, type: 3}
 --- !u!198 &198883062637188292
 ParticleSystem:
   m_ObjectHideFlags: 1
@@ -4204,9 +4208,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 458308143
-  m_SortingLayer: 3
-  m_SortingOrder: 1
+  m_SortingLayerID: -1178198237
+  m_SortingLayer: 5
+  m_SortingOrder: 3
   m_Sprite: {fileID: 21300000, guid: 797713ae3e996a84fbbb0da39c87ccc3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -4336,9 +4340,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 458308143
-  m_SortingLayer: 3
-  m_SortingOrder: 0
+  m_SortingLayerID: -1178198237
+  m_SortingLayer: 5
+  m_SortingOrder: 2
   m_Sprite: {fileID: 21300000, guid: b7298244ab383c741b268824a63514c8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

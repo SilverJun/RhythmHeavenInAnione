@@ -35,6 +35,7 @@ public class AuditoriumStage : AbstractStage
 
         InvokeRepeating("SetAutoGuitarAnim", 0.0f, _baseStage._fourBeatSecond);
         InvokeRepeating("SetAutoDrumAnim", 0.0f, _baseStage._fourBeatSecond);
+        _audioSource.volume = StageManager.Instance._fxVolume;
     }
 	
 	void FixedUpdate ()
@@ -175,18 +176,17 @@ public class AuditoriumStage : AbstractStage
 
     public override void OnFail(Note note)
     {
-        _audioSource.PlayOneShot(_wow);
         PlayMissAnim();
     }
 
     public override void OnEnd(EndStageUI ui)
     {
         CancelInvoke();
-        MenuInitializer._initStageName = "SchoolMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "SchoolMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }

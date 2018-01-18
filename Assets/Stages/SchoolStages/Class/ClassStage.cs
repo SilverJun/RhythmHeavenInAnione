@@ -15,19 +15,21 @@ public class ClassStage : AbstractStage
     private GameObject _deco;
 
     public List<GameObject> _decoSpriteList = new List<GameObject>();
-    //public GameObject _fstGraffiti;
-    //public GameObject _secGraffiti;
-    //public GameObject _trdGraffiti;
+    public GameObject _fstGraffiti;
+    public GameObject _secGraffiti;
+    public GameObject _trdGraffiti;
 
     public AudioSource _audioSource;
     public AudioClip _pop;
     public AudioClip _erase;
+    public AudioClip _fail;
     
     void Start()
     {
         _graffitiAnim = _graffiti.GetComponent<Animator>();
         _graffitiAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
         _playerAnim = _player.GetComponent<Animator>();
+        _audioSource.volume = StageManager.Instance._fxVolume;
     }
 
     void FixedUpdate()
@@ -43,24 +45,30 @@ public class ClassStage : AbstractStage
     public void SetPlayerAction()
     {
         _playerAnim.SetTrigger("Action");
-        _audioSource.PlayOneShot(_erase);
     }
 
     // normal
     void SetPattern1()
     {
+        _fstGraffiti.GetComponent<SpriteRenderer>().color = Color.yellow;
+        _secGraffiti.GetComponent<SpriteRenderer>().color = Color.red;
+        _trdGraffiti.GetComponent<SpriteRenderer>().color = Color.blue;
         _graffitiAnim.SetTrigger("Pattern1");
     }
 
     // fast
     void SetPattern2()
     {
+        _fstGraffiti.GetComponent<SpriteRenderer>().color = Color.yellow;
+        _secGraffiti.GetComponent<SpriteRenderer>().color = Color.red;
+        _trdGraffiti.GetComponent<SpriteRenderer>().color = Color.blue;
         _graffitiAnim.SetTrigger("Pattern2");
     }
 
     void SetDeco()
     {
         _deco = _decoSpriteList[Random.Range(0, _decoSpriteList.Count - 1)];
+        _deco.GetComponent<SpriteRenderer>().color = Color.white;
         _deco.SetActive(true);
     }
     ///
@@ -118,34 +126,36 @@ public class ClassStage : AbstractStage
 
     public override void OnSuccess(Note note)
     {
-        //switch (note._noteName)
-        //{
-        //    case "tc1":
-        //    case "fc2":
-        //        _fstGraffiti.SetActive(false);
-        //        break;
-        //    case "tc2":
-        //    case "fc3":
-        //        _secGraffiti.SetActive(false);
-        //        break;
-        //    case "tc3":
-        //    case "fc4":
-        //        _trdGraffiti.SetActive(false);
-        //        break;
-        //}
+        _audioSource.PlayOneShot(_erase);
+        switch (note._noteName)
+        {
+            case "tc1":
+            case "fc2":
+                _fstGraffiti.GetComponent<SpriteRenderer>().color = Color.clear;
+                break;
+            case "tc2":
+            case "fc3":
+                _secGraffiti.GetComponent<SpriteRenderer>().color = Color.clear;
+                break;
+            case "tc3":
+            case "fc4":
+                _trdGraffiti.GetComponent<SpriteRenderer>().color = Color.clear;
+                break;
+        }
     }
 
     public override void OnFail(Note note)
     {
+        _audioSource.PlayOneShot(_fail);
     }
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "SchoolMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "SchoolMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }

@@ -32,6 +32,7 @@ public class StandStage : AbstractStage
         _playerAnim = _player.GetComponent<Animator>();
 
         SetAnimSpeed();
+        _audioSource.volume = StageManager.Instance._fxVolume;
     }
 	
 	void FixedUpdate ()
@@ -108,11 +109,11 @@ public class StandStage : AbstractStage
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "ExteriorMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "ExteriorMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }

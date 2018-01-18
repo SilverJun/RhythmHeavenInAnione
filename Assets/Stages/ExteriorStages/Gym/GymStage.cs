@@ -22,6 +22,7 @@ public class GymStage : AbstractStage
         _speakerAnim = _speaker.GetComponent<Animator>();
         _playerAnim = _player.GetComponent<Animator>();
         _speakerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _audioSource.volume = StageManager.Instance._fxVolume;
     }
 
     void FixedUpdate ()
@@ -93,11 +94,11 @@ public class GymStage : AbstractStage
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "ExteriorMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "ExteriorMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }

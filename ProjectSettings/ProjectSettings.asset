@@ -11,8 +11,8 @@ PlayerSettings:
   targetDevice: 0
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
-  productName: AnioneGame
+  companyName: SilverJun
+  productName: "\uB9AC\uB4EC\uBAA8\uC544 in \uC560\uB2C8\uC6D0"
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
@@ -247,8 +247,8 @@ PlayerSettings:
   AndroidTargetDevice: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/jange/Documents/AnioneGame/anionekey.keystore
-  AndroidKeyaliasName: anionegamekey
+  AndroidKeystoreName: C:/Users/jange/Desktop/AnioneGame/user.keystore
+  AndroidKeyaliasName: user
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   AndroidEnableTango: 0

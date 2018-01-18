@@ -31,8 +31,12 @@ public class BaseStage : MonoBehaviour
     public float _fourBeatSecond;
     private float _judgementSecond;
 
+    private PauseButton _pauseButton;
+
     public void Awake()
     {
+        _pauseButton = FindObjectOfType<PauseButton>();
+
         _stageBgm.playOnAwake = false;
         _metronome.playOnAwake = false;
 
@@ -46,6 +50,9 @@ public class BaseStage : MonoBehaviour
         {
             _scriptText = _script.text;
         }
+        StageManager.Instance._baseStage = this;
+        _stageBgm.volume = StageManager.Instance._bgVolume;
+        _metronome.volume = StageManager.Instance._fxVolume;
 
         // RAS 파싱작업.
         _parser = new Parser(this, _scriptText);
@@ -208,9 +215,10 @@ public class BaseStage : MonoBehaviour
     IEnumerator GoEndScene()
     {
         yield return new WaitForSeconds(2.0f);
-        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject);
+        var overlay = Instantiate(Resources.Load("Prefab/FadeOut") as GameObject);
         yield return new WaitForSeconds(2.0f);
-
+        overlay.SetActive(false);
+        _pauseButton.Close();
         var ui = UIManager.OpenUI<EndStageUI>(Resources.Load("Prefab/EndStageUI") as GameObject);
         _stage.OnEnd(ui);
         ui.SetScore(_hitNote, _totalNote);

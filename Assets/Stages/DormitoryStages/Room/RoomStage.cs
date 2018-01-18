@@ -19,6 +19,7 @@ public class RoomStage : AbstractStage
     {
 		Debug.Log(_baseStage._fourBeatSecond);
         _playerAnim = _player.GetComponent<Animator>();
+        _sfx.volume = StageManager.Instance._fxVolume;
     }
 
     void FixedUpdate()
@@ -117,11 +118,11 @@ public class RoomStage : AbstractStage
 
     public override void OnEnd(EndStageUI ui)
     {
-        MenuInitializer._initStageName = "DormitoryMenu";
     }
 
     public override void OnExit()
     {
+        MenuInitializer._initStageName = "DormitoryMenu";
         SceneManager.LoadScene("MainSplash");
     }
 }
