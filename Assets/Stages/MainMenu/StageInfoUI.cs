@@ -51,10 +51,22 @@ public class StageInfoUI : UI
         StartCoroutine(_StartStage());
     }
 
+    public void StartTutorial()
+    {
+        StartCoroutine(_StartTutorial());
+    }
+
     IEnumerator _StartStage()
     {
         Instantiate(Resources.Load("Prefab/FadeOut") as GameObject);
         yield return new WaitForSeconds(1.5f);
         StageManager.Instance.SetStage(_stageInfo.StageName);
+    }
+
+    IEnumerator _StartTutorial()
+    {
+        Instantiate(Resources.Load("Prefab/FadeOut") as GameObject);
+        yield return new WaitForSeconds(1.5f);
+        StageManager.Instance.SetTutorial(_stageInfo.StageName);
     }
 }

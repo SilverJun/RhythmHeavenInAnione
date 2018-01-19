@@ -17,13 +17,13 @@ Init {
     SetStage(Library)
     
     NoteSetting(OneNotice, 4, Notice)
-    NoteSetting(OneCheck, 8, Touch)
+    NoteSetting(OneCheck, 4, Touch)
 
     NoteSetting(t1N, 8, Notice)
     NoteSetting(t2N, 8, Notice)
     NoteSetting(tN, 4, Notice)
     NoteSetting(t1C, 8, Touch)
-    NoteSetting(t2C, 8, Touch)
+    NoteSetting(t2C, 4, Touch)
     
     SetPattern(One, OneNotice, OneCheck)
     SetPattern(Two, t1N, t2N, tN, t1C, t2C)

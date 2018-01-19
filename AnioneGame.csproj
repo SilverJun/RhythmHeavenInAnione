@@ -325,6 +325,7 @@
     <Compile Include="Assets\Script\Stage\BaseStage.cs" />
     <Compile Include="Assets\Script\Stage\BaseStart.cs" />
     <Compile Include="Assets\Script\Stage\StageManager.cs" />
+    <Compile Include="Assets\Script\Stage\TutorialStage.cs" />
     <Compile Include="Assets\Script\Touch\TouchManager.cs" />
     <Compile Include="Assets\Script\UI\UI.cs" />
     <Compile Include="Assets\Script\UI\UIHelper.cs" />

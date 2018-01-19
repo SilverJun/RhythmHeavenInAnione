@@ -87,6 +87,13 @@ public class StageManager : MonoBehaviour
         _stageBgm = (AudioClip)Resources.Load("Sound/StageBgm/" + _currentStageName + "Stage");
     }
 
+    public void SetTutorial(string stageName)
+    {
+        _currentStageName = stageName;
+        SceneManager.LoadScene("AbstractTutorial");
+        _stageScript = ((TextAsset)Resources.Load("RAS/" + _currentStageName + "Stage")).text;
+    }
+
     public void UpdateStageInfo(string status, float percent)
     {
         _stageInfoJson[_currentStageName]["StageStatus"] = status;

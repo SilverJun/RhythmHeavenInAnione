@@ -33,7 +33,7 @@ Init {
     NoteSetting(f1c, 4, Touch)
     NoteSetting(f2c, 8, Touch)
     NoteSetting(f3c, 8, Touch)
-    NoteSetting(f4c, 8, Touch)
+    NoteSetting(f4c, 4, Touch)
     NoteSetting(fn1, 4, Notice)
     
 

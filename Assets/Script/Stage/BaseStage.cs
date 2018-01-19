@@ -10,8 +10,8 @@ public class BaseStage : MonoBehaviour
     // RAS
     [SerializeField]
     private TextAsset _script;
-    private string _scriptText;
-    private Parser _parser;
+    protected string _scriptText;
+    protected Parser _parser;
     //
 
     // Stage, Judgement
@@ -29,9 +29,9 @@ public class BaseStage : MonoBehaviour
     public float _startDelay;
     public float _bpm;
     public float _fourBeatSecond;
-    private float _judgementSecond;
+    protected float _judgementSecond;
 
-    private PauseButton _pauseButton;
+    protected PauseButton _pauseButton;
 
     public void Awake()
     {
@@ -160,7 +160,7 @@ public class BaseStage : MonoBehaviour
         }
     }
 
-    IEnumerator NoticeHit(Note note)
+    protected IEnumerator NoticeHit(Note note)
     {
         while (_stageBgm.time <= note._genTime + note._beat * _fourBeatSecond - _judgementSecond)
         {
@@ -176,7 +176,7 @@ public class BaseStage : MonoBehaviour
         }
     }
 
-    IEnumerator CheckHit(Note note)
+    protected IEnumerator CheckHit(Note note)
     {
         yield return new WaitWhile(() => note._genTime - _judgementSecond >= _stageBgm.time + _startDelay);
 
