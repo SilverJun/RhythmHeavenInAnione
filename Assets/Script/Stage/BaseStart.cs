@@ -7,6 +7,13 @@ public class BaseStart : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
-	    Instantiate(Resources.Load("Prefab/Start/" + StageManager.Instance._currentStageName + "Start"));
+	    var startAnim = Instantiate(Resources.Load<GameObject>("Prefab/Start/" + StageManager.Instance._currentStageName + "Start"));
+	    StartCoroutine(PlayStartAnim(startAnim));
 	}
+
+    IEnumerator PlayStartAnim(GameObject startAnim)
+    {
+        yield return new WaitForSeconds(0.5f);
+        startAnim.GetComponent<Animator>().SetTrigger("Play");
+    }
 }
