@@ -8,7 +8,7 @@
 //     RAS version 2.0. test
 //     Designed By Silverjun, Generated At 2017/10/25
 //
-//     Stage - Room
+//     Stage - PERoom
 //
 
 Init {

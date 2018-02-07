@@ -26,7 +26,7 @@ public class BaseStage : MonoBehaviour
     private int _totalNote;
     private int _hitNote;
 
-    public float _startDelay;
+    public float _startDelay = 0.005f;
     public float _bpm;
     public float _fourBeatSecond;
     protected float _judgementSecond;
@@ -132,16 +132,13 @@ public class BaseStage : MonoBehaviour
 
         var noteList = new List<Note>();
 
-        float offsetTime = 0.0f;
+        float offsetTime = _startDelay;
 
         foreach (var note in pattern._noteSetting)
         {
             _stageNostes.Add(new Note(genTime + offsetTime, note._type, note._name, note._beat));
             noteList.Add(_stageNostes[_stageNostes.Count-1]);
             offsetTime += BeatToRealSecond(note._beat);
-
-            if (noteList.Last()._type != NoteType.Notice)
-                _totalNote++;
         }
         
         for (int i = 0; i < noteList.Count; i++)
@@ -150,35 +147,58 @@ public class BaseStage : MonoBehaviour
             {
                 StartCoroutine(CheckHit(noteList[i]));
             }
-            else if (noteList[i]._type == NoteType.Notice)
-            {
-                StartCoroutine(NoticeHit(noteList[i]));
-            }
 
-            yield return new WaitWhile(() => _stageBgm.time <= noteList[i]._genTime);
+            yield return new WaitWhile(() => _stageBgm.time <= noteList[i]._genTime + _startDelay);
             _stage.OnNote(noteList[i]);
+            yield return new WaitWhile(() => _stageBgm.time <= noteList[i]._genTime + _judgementSecond + _startDelay);
         }
     }
 
-    protected IEnumerator NoticeHit(Note note)
+    protected IEnumerator BeforeHit(Note note)
     {
-        while (_stageBgm.time <= note._genTime + note._beat * _fourBeatSecond - _judgementSecond)
+        Debug.LogFormat("Before Start - {0}, {1}", note._genTime, _stageBgm.time);
+        while (_stageBgm.time < note._genTime - _judgementSecond + _startDelay)
         {
             yield return new WaitForFixedUpdate();
 
             if (TouchManager.IsTouch)
             {
-                Debug.LogFormat("Don't Hit Notice! - {0}, {1}", note._genTime, _stageBgm.time);
+                Debug.LogFormat("Before Hit! - {0}, {1}", note._genTime, _stageBgm.time);
                 _stage.OnFail(note);
-                _hitNote--;
+                note._isHit = true;
+                note._isSucceed = false;
                 yield break;
             }
         }
+        Debug.LogFormat("Before End - {0}, {1}", note._genTime, _stageBgm.time);
+    }
+
+    protected IEnumerator AfterHit(Note note)
+    {
+        Debug.LogFormat("After Start - {0}, {1}", note._genTime, _stageBgm.time);
+        while (_stageBgm.time < note._genTime + _startDelay + note._beat * _fourBeatSecond - _judgementSecond)
+        {
+            yield return new WaitForFixedUpdate();
+
+            if (TouchManager.IsTouch)
+            {
+                Debug.LogFormat("After Hit! - {0}, {1}", note._genTime, _stageBgm.time);
+                _stage.OnFail(note);
+                note._isHit = true;
+                note._isSucceed = false;
+                yield break;
+            }
+        }
+        Debug.LogFormat("After End - {0}, {1}", note._genTime, _stageBgm.time);
     }
 
     protected IEnumerator CheckHit(Note note)
     {
+        StartCoroutine(BeforeHit(note));
+
         yield return new WaitWhile(() => note._genTime - _judgementSecond >= _stageBgm.time + _startDelay);
+
+        Debug.LogFormat("Check Start - {0}, {1}", note._genTime, _stageBgm.time);
 
         while (_stageBgm.time <= note._genTime + _judgementSecond + _startDelay)
         {
@@ -190,18 +210,19 @@ public class BaseStage : MonoBehaviour
                     _stage.OnSuccess(note);
                     note._isSucceed = true;
                     note._isHit = true;
-                    _hitNote++;
                 }
                 else
                 {
                     Debug.LogFormat("Hit Already! - {0}, {1}", note._genTime, _stageBgm.time);
                     _stage.OnFail(note);
                     note._isSucceed = false;
-                    _hitNote--;
+                    note._isHit = true;
                 }
             }
             yield return new WaitForFixedUpdate();
         }
+
+        Debug.LogFormat("Check End - {0}, {1}", note._genTime, _stageBgm.time);
 
         if (!note._isHit)
         {
@@ -209,6 +230,10 @@ public class BaseStage : MonoBehaviour
             note._isSucceed = false;
             note._isHit = false;
             _stage.OnFail(note);
+        }
+        else
+        {
+            StartCoroutine(AfterHit(note));
         }
     }
 
@@ -221,6 +246,10 @@ public class BaseStage : MonoBehaviour
         _pauseButton.Close();
         var ui = UIManager.OpenUI<EndStageUI>(Resources.Load("Prefab/EndStageUI") as GameObject);
         _stage.OnEnd(ui);
+
+        _hitNote = _stageNostes.Count((x) => x._type == NoteType.Touch && x._isSucceed);
+        _totalNote = _stageNostes.Count((x) => x._type == NoteType.Touch);
+
         ui.SetScore(_hitNote, _totalNote);
         _stageObject.SetActive(false);
     }

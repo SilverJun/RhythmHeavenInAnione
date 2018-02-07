@@ -6,12 +6,8 @@ using UnityEngine.SceneManagement;
 public class StandStage : AbstractStage
 {
     // 태훈이
-    [SerializeField] private GameObject _taehoon;
-    private Animator _taehoonAnim;
-    [SerializeField] private GameObject _game;
-    private Animator _gameAnim;
-    [SerializeField] private GameObject _ani;
-    private Animator _aniAnim;
+    [SerializeField] private GameObject _npc;
+    private Animator _npcAnim;
     [SerializeField] private GameObject _player; // cartoon
     private Animator _playerAnim;
 
@@ -26,9 +22,7 @@ public class StandStage : AbstractStage
 
     void Start ()
     {
-        _taehoonAnim = _taehoon.GetComponent<Animator>();
-        _gameAnim = _game.GetComponent<Animator>();
-        _aniAnim = _ani.GetComponent<Animator>();
+        _npcAnim = _npc.GetComponent<Animator>();
         _playerAnim = _player.GetComponent<Animator>();
 
         SetAnimSpeed();
@@ -51,16 +45,12 @@ public class StandStage : AbstractStage
 
     void SetNPCAction()
     {
-        _taehoonAnim.SetTrigger("Action");
-        _gameAnim.SetTrigger("Action");
-        _aniAnim.SetTrigger("Action");
+        _npcAnim.SetTrigger("Action");
     }
 
     void SetAnimSpeed()
     {
-        _taehoonAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
-        _gameAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
-        _aniAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
+        _npcAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
         _playerAnim.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
     }
 

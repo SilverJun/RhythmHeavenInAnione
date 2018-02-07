@@ -80,7 +80,7 @@ public class StoreStage : AbstractStage
             _bread1Animator.SetFloat("AnimSpeed", _baseStage.GetAnimSpeed());
             SetBreadRandom(_bread1);
         }
-        if (_isTwo && _bread2 == null)
+        else if (_isTwo && _bread2 == null)
         {
             _bread2 = Instantiate(_bread);
             _bread2.SetActive(true);
