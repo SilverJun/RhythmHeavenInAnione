@@ -7,7 +7,7 @@
 * 리듬세상 게임을 모티브로 제작.
 * 울산애니원고등학교 13기 졸업작품 게임.
 * 스테이지의 노트 패턴을 쉽게 만들어주는 RAS스크립트 언어 구현.
-* 플레이스토어와 앱스토어에 출시예정.
+* [플레이스토어](https://play.google.com/store/apps/details?id=com.SilverJun.AnioneGame)와 [앱스토어](https://itunes.apple.com/us/app/리듬모아-in-애니원/id1393503028?l=ko&ls=1&mt=8) 출시완료.
 
 ## 팀 - 대신귀여운현재혁을드리겟습니다
 #### 기획
